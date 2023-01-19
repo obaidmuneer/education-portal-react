@@ -16,7 +16,6 @@ import {
     useColorMode,
     Center,
     IconButton,
-    Input,
     Hide,
     Show,
     Heading,
@@ -66,7 +65,7 @@ export default function Navbar() {
                                 fontWeight={600}
                                 fontSize={{ base: '2xl', sm: '3xl' }}
                                 lineHeight={'110%'}
-                                >
+                            >
                                 Class ID{' '}
                                 <Text as={'span'} color={'orange.400'}>
                                     AI

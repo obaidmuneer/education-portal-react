@@ -1,14 +1,9 @@
 import {
-    Flex,
     Container,
     Heading,
     Stack,
     Text,
-    Button,
-    Icon,
-    IconProps,
     Show,
-    Box,
     Hide,
     Center,
 } from '@chakra-ui/react';
