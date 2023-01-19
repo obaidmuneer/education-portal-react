@@ -1,14 +1,12 @@
 import {
-    Heading,
-    Avatar,
     Box,
     Center,
-    Text,
-    Stack,
-    Button,
-    Link,
-    Badge,
     useColorModeValue,
+    TabPanels,
+    TabPanel,
+    TabList,
+    Tabs,
+    Tab
 } from '@chakra-ui/react';
 import { GoDiffAdded } from 'react-icons/go';
 
@@ -27,13 +25,28 @@ export default function DocBody() {
                 p={6}
                 textAlign={'center'}>
 
-                <Center>
-                    <Box w={600} >
-                        <Form icon={<GoDiffAdded />} color='blue' placeHolder='Enter Your Link Here'  />
-                    </Box>
-                </Center>
 
-                <DocList docs={['asdas', 'asdsad', 'asdsad', 'asdsad', 'asdsad']} />
+
+                <Tabs isFitted variant='enclosed'>
+                    <TabList mb='1em'>
+                        <Tab>Post Your Link</Tab>
+                        <Tab>Post Study Material</Tab>
+                    </TabList>
+                    <TabPanels>
+                        <TabPanel>
+                            <Center>
+                                <Box w={600} >
+                                    <Form icon={<GoDiffAdded />} color='blue' placeHolder='Enter Your Link Here' />
+                                </Box>
+                            </Center>
+                            <DocList docs={['asdas', 'asdsad', 'asdsad', 'asdsad', 'asdsad']} />
+                        </TabPanel>
+                        <TabPanel>
+                            <p>stay tuned for update!</p>
+                        </TabPanel>
+                    </TabPanels>
+                </Tabs>
+
             </Box>
         </Center>
     );
