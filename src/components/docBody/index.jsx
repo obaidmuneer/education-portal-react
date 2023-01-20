@@ -1,22 +1,88 @@
+import { useState } from 'react';
 import {
     Box,
     Center,
-    useColorModeValue,
     TabPanels,
     TabPanel,
     TabList,
     Tabs,
-    Tab
+    Tab,
+    IconButton,
+    Stack
 } from '@chakra-ui/react';
-import { GoDiffAdded } from 'react-icons/go';
+import { BsCode, BsFilePdf } from 'react-icons/bs';
 
-import Form from '../form';
 import DocList from '../docList';
 import CodeForm from '../codeForm';
+import SelectFile from '../selectFile';
+import LinkForm from "../linkForm";
 
 export default function DocBody() {
+    const [docs, setDocs] = useState([])
+    const [textLink, setTextLink] = useState('')
+    const [isCodeBlock, setIsCodeBlock] = useState(false)
+    const [isFileUpload, setIsFileUpload] = useState(false)
+
+    const handleData = () => {
+        setDocs([...docs, textLink])
+    }
     return (
-        <Center>
+        <Tabs isFitted variant='enclosed'>
+            <TabList mb='1em'>
+                <Tab>Post Your Link</Tab>
+                <Tab>Post Study Material</Tab>
+            </TabList>
+            <TabPanels>
+                <TabPanel>
+                    <Center>
+                        <Box w={600} >
+                          <LinkForm />
+                        </Box>
+                    </Center>
+                    <DocList docs={docs} />
+                </TabPanel>
+                <TabPanel>
+
+                    {
+                        isCodeBlock ? <CodeForm /> : isFileUpload ? <SelectFile /> :
+                            <Stack direction={'row'} justifyContent='center' spacing={6}>
+                                <IconButton
+                                    onClick={() => setIsCodeBlock(true)}
+                                    variant='outline'
+                                    colorScheme='orange'
+                                    aria-label='Call Sage'
+                                    fontSize='20px'
+                                    icon={<BsCode />} />
+
+                                <IconButton
+                                    onClick={() => setIsFileUpload(true)}
+                                    variant='outline'
+                                    colorScheme='orange'
+                                    aria-label='Call Sage'
+                                    fontSize='20px'
+                                    icon={<BsFilePdf />} />
+                            </Stack>
+
+                    }
+
+
+
+                    {/* <SocialButton label={'Twitter'} href={'#'}>
+                <FaTwitter />
+            </SocialButton>
+            <SocialButton label={'YouTube'} href={'#'}>
+                <FaYoutube />
+            </SocialButton>
+            <SocialButton label={'Instagram'} href={'#'}>
+                <FaInstagram />
+            </SocialButton> */}
+                </TabPanel>
+            </TabPanels>
+        </Tabs>
+    );
+}
+
+{/* <Center>
             <Box
                 maxW={'xxl'}
                 w={'full'}
@@ -26,29 +92,8 @@ export default function DocBody() {
                 p={6}
                 textAlign={'center'}>
 
-
-
-                <Tabs isFitted variant='enclosed'>
-                    <TabList mb='1em'>
-                        <Tab>Post Your Link</Tab>
-                        <Tab>Post Study Material</Tab>
-                    </TabList>
-                    <TabPanels>
-                        <TabPanel>
-                            <Center>
-                                <Box w={600} >
-                                    <Form icon={<GoDiffAdded />} color='blue' placeHolder='Enter Your Link Here' />
-                                </Box>
-                            </Center>
-                            <DocList docs={['asdas', 'asdsad', 'asdsad', 'asdsad', 'asdsad']} />
-                        </TabPanel>
-                        <TabPanel>
-                            <CodeForm />
-                        </TabPanel>
-                    </TabPanels>
-                </Tabs>
+               
 
             </Box>
-        </Center>
-    );
-}
+        </Center> */}
+
