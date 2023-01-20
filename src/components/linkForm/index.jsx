@@ -14,7 +14,7 @@ let validationSchema = yup.object().shape({
 
 const LinkForm = () => {
     const { state, dispatch } = useContext(GlobalContext)
-    
+
     const formik = useFormik({
         initialValues: {
             link: '',
@@ -34,7 +34,7 @@ const LinkForm = () => {
                 contentType: 'assignment',
                 classId: localStorage.getItem('classId')
             })
-            console.log(res);
+            console.log(res.data);
             // dispatch({
             //     type: 'docs',
             //     payload: res.data.docs

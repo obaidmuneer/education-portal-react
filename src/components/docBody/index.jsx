@@ -18,14 +18,9 @@ import SelectFile from '../selectFile';
 import LinkForm from "../linkForm";
 
 export default function DocBody() {
-    const [docs, setDocs] = useState([])
-    const [textLink, setTextLink] = useState('')
     const [isCodeBlock, setIsCodeBlock] = useState(false)
     const [isFileUpload, setIsFileUpload] = useState(false)
 
-    const handleData = () => {
-        setDocs([...docs, textLink])
-    }
     return (
         <Tabs isFitted variant='enclosed'>
             <TabList mb='1em'>
@@ -36,10 +31,10 @@ export default function DocBody() {
                 <TabPanel>
                     <Center>
                         <Box w={600} >
-                          <LinkForm />
+                            <LinkForm />
                         </Box>
                     </Center>
-                    <DocList docs={docs} />
+                    <DocList />
                 </TabPanel>
                 <TabPanel>
 

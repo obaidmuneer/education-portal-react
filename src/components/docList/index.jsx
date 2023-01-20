@@ -1,9 +1,11 @@
 import { Badge, Box, HStack, IconButton, Spacer, StackDivider, Text, VStack } from '@chakra-ui/react'
-import React from 'react'
+import { useContext } from 'react'
 import { FaTrash } from 'react-icons/fa'
+import { GlobalContext } from '../../context/context'
 
-function DocList({ docs, deleteTodo }) {
-    if (docs.length === 0)
+function DocList({ deleteTodo }) {
+    const { state } = useContext(GlobalContext)
+    if (state?.docs?.length === 0)
         return (
             <Box display={'flex'} justifyContent={'center'} >
                 <Badge colorScheme='green' p='4' m='4' borderRadius='lg'>
@@ -31,11 +33,11 @@ function DocList({ docs, deleteTodo }) {
 
     return (
         <VStack {...vStackProps}>
-            {docs?.map((doc, index) => (
+            {state?.docs?.map((doc, index) => (
                 <HStack key={index}>
-                    <Text>{doc}</Text>
+                    <Text>{doc.text}</Text>
                     <Spacer />
-                    <IconButton onClick={() => deleteTodo(docs.id)} {...buttonProps} />
+                    <IconButton onClick={() => deleteTodo(state?.docs?._id)} {...buttonProps} />
                 </HStack>
             ))}
         </VStack>

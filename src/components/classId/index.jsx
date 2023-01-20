@@ -30,7 +30,7 @@ const ClassId = () => {
 
     const fetchData = async (id) => {
         try {
-            const res = await axios.get(`http://localhost:8080/api/v1/docs/${id}}`)
+            const res = await axios.get(`http://localhost:8080/api/v1/docs/${id}`)
             console.log(res);
             dispatch({
                 type: "docs",
