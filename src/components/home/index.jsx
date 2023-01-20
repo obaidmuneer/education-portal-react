@@ -7,8 +7,8 @@ import {
     Hide,
     Center,
 } from '@chakra-ui/react';
-import Form from '../form';
 import DocBody from '../docBody';
+import ClassId from '../classId';
 
 const Home = () => {
     return (
@@ -16,7 +16,7 @@ const Home = () => {
             <Container maxW={'5xl'}>
                 <Show below='md'>
                     <Center   >
-                        <Form />
+                        <ClassId />
                     </Center>
                 </Show>
                 <Hide below='md' >

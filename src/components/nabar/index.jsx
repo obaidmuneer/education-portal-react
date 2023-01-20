@@ -23,10 +23,7 @@ import {
 } from '@chakra-ui/react';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
-import { BiSend } from 'react-icons/bi';
-import Form from '../form';
-
-
+import ClassId from '../classId';
 
 const Links = ['Home', 'Github'];
 
@@ -48,6 +45,7 @@ const NavLink = ({ children }) => (
 export default function Navbar() {
     const { colorMode, toggleColorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
+
     return (
         <>
             <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
@@ -88,7 +86,7 @@ export default function Navbar() {
                     <Flex alignItems={'center'} >
                         <Hide below='md' >
                             <Box mr={2}>
-                                <Form />
+                                <ClassId />
                             </Box>
                         </Hide>
 

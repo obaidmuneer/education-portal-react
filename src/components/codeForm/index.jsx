@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Textarea, Text, Button, useColorModeValue, Select, Heading, Divider } from '@chakra-ui/react'
-import Form from '../form'
+import Form from '../formikInput'
 import CodeBlocks from '../codeBlock'
 
 const supportedLanguage = ['html', 'javascript', 'js', 'jsx', 'json', 'text', 'typescript', 'ts', 'tsx', 'python']
@@ -20,12 +20,12 @@ const CodeForm = () => {
 
     return (
         <>
-            <Form
+            {/* <Form
                 placeHolder={'Enter Title for Code'}
                 color='blue'
                 hideBtn={true}
                 handleChange={setTitle}
-                value={title} />
+                value={title} /> */}
 
             <Select
                 bg={bg_c}
