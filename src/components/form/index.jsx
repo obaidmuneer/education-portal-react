@@ -5,8 +5,11 @@ import {
     IconButton,
 } from '@chakra-ui/react';
 import { BiSend } from 'react-icons/bi';
-const Form = ({ color, icon, placeHolder }) => {
+const Form = ({ color, icon, placeHolder, handleChange, value, hideBtn }) => {
     const c = color || 'orange';
+    const bg_c = useColorModeValue(`${c}.400`, `${c}.800`)
+    const sec_c = useColorModeValue('white', 'gray.800')
+
     return (
         <>
             <Stack direction={'row'} >
@@ -17,16 +20,20 @@ const Form = ({ color, icon, placeHolder }) => {
                     _focus={{
                         bg: 'whiteAlpha.300',
                     }}
+                    onChange={(e) => handleChange(e.target.value)}
+                    value={value}
                 />
-                <IconButton
-                    bg={useColorModeValue(`${c}.400`, `${c}.800`)}
-                    color={useColorModeValue('white', 'gray.800')}
-                    _hover={{
-                        bg: `${c}.600`,
-                    }}
-                    aria-label="Subscribe"
-                    icon={icon || <BiSend />}
-                />
+                {
+                    !hideBtn && <IconButton
+                        bg={bg_c}
+                        color={sec_c}
+                        _hover={{
+                            bg: `${c}.600`,
+                        }}
+                        aria-label="Subscribe"
+                        icon={icon || <BiSend />}
+                    />
+                }
             </Stack>
         </>
     )

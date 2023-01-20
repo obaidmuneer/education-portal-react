@@ -12,6 +12,7 @@ import { GoDiffAdded } from 'react-icons/go';
 
 import Form from '../form';
 import DocList from '../docList';
+import CodeForm from '../codeForm';
 
 export default function DocBody() {
     return (
@@ -42,7 +43,7 @@ export default function DocBody() {
                             <DocList docs={['asdas', 'asdsad', 'asdsad', 'asdsad', 'asdsad']} />
                         </TabPanel>
                         <TabPanel>
-                            <p>stay tuned for update!</p>
+                            <CodeForm />
                         </TabPanel>
                     </TabPanels>
                 </Tabs>
