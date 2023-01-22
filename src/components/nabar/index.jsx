@@ -25,9 +25,9 @@ import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import ClassId from '../classId';
 
-const Links = ['Home', 'Github'];
+const Links = [{ title: 'Home', path: '' }, { title: 'Github', path: 'https://github.com/obaidmuneer' }];
 
-const NavLink = ({ children }) => (
+const NavLink = ({ children, path }) => (
     <Link
         px={2}
         py={1}
@@ -36,7 +36,7 @@ const NavLink = ({ children }) => (
             textDecoration: 'none',
             bg: useColorModeValue('gray.200', 'gray.700'),
         }}
-        href={'#'}>
+        href={path}>
         {children}
     </Link>
 );
@@ -78,7 +78,7 @@ export default function Navbar() {
                             spacing={4}
                             display={{ base: 'none', md: 'flex' }}>
                             {Links.map((link) => (
-                                <NavLink key={link}>{link}</NavLink>
+                                <NavLink path={link.path} key={link.title}>{link.title}</NavLink>
                             ))}
                         </HStack>
                     </HStack>
