@@ -1,18 +1,43 @@
-import { useState } from 'react'
-import { Textarea, Text, Button, useColorModeValue, Select, Heading, Divider } from '@chakra-ui/react'
+import { useState, useContext } from 'react'
+import { Textarea, Text, Button, useColorModeValue, Select, Heading, Divider, Input, Stack } from '@chakra-ui/react'
 import Form from '../formikInput'
 import CodeBlocks from '../codeBlock'
+import axios from 'axios'
+import { GlobalContext } from '../../context/context'
 
-const supportedLanguage = ['html', 'javascript', 'js', 'jsx', 'json', 'text', 'typescript', 'ts', 'tsx', 'python']
+const supportedLanguage = ['html', 'css', 'javascript', 'js', 'jsx', 'json', 'text', 'typescript', 'ts', 'tsx', 'python']
 
-const CodeForm = () => {
-    const [blocks, setBlocks] = useState([])
-    const [title, setTitle] = useState('')
-    const [codeText, setCodeText] = useState('')
+const CodeForm = ({ handleBlock }) => {
+    const { state, dispatch } = useContext(GlobalContext)
+    const [codeTitle, setCodeTitle] = useState('')
     const [selectedLang, setSelectedLang] = useState('')
+    const [codeBlock, setCodeBlock] = useState('')
 
-    const handleData = () => {
-        setBlocks([...blocks, { codeText, selectedLang, title }])
+    const handleData = async (e) => {
+        e.preventDefault()
+        const [select, tit, code] = e.target
+        if (!select.value || !tit.value || !code.value) {
+            return
+        }
+        try {
+            const res = await axios.post(`${state.api}docs/code`, {
+                codeTitle,
+                codeBlock,
+                codeLang: selectedLang,
+                contentType: 'code',
+                classId: state.classId
+            })
+            console.log(res.data.doc);
+            dispatch({
+                type: 'docs',
+                payload: [res.data.doc, ...state.docs]
+            })
+        } catch (error) {
+            console.log(error.message);
+        }
+
+
+        // setBlocks([...blocks, { codeText: codeBlock, selectedLang, title }])
     }
 
     const bg_c = useColorModeValue('blackAlpha.100', 'whiteAlpha.100')
@@ -20,49 +45,62 @@ const CodeForm = () => {
 
     return (
         <>
-            {/* <Form
-                placeHolder={'Enter Title for Code'}
-                color='blue'
-                hideBtn={true}
-                handleChange={setTitle}
-                value={title} /> */}
+            <form onSubmit={handleData}>
+                <Select
+                    bg={bg_c}
+                    _focus={focus}
+                    border={0}
 
-            <Select
-                bg={bg_c}
-                _focus={focus}
-                border={0}
+                    my='1'
+                    placeholder='Select Language'
+                    onChange={(e) => setSelectedLang(e.target.value)}
+                    value={selectedLang} >
+                    {
+                        supportedLanguage.map((lang, index) => {
+                            return <option key={index} value={lang} >{lang}</option>
+                        })
+                    }
+                </Select>
 
-                mt='1'
-                placeholder='Select Language'
-                onChange={(e) => setSelectedLang(e.target.value)}
-                value={selectedLang} >
-                {
-                    supportedLanguage.map((lang, index) => {
-                        return <option key={index} value={lang} >{lang}</option>
-                    })
-                }
-            </Select>
+                <Input
+                    bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}
+                    border={0}
+                    _focus={{
+                        bg: 'whiteAlpha.300',
+                    }}
+                    id="codeTitle"
+                    name="codeTitle"
+                    value={codeTitle}
+                    onChange={(e) => setCodeTitle(e.target.value)}
+                    placeholder="Enter Code Title Here..."
+                />
 
-            <Textarea
-                value={codeText}
-                onChange={(e) => setCodeText(e.target.value)}
-                placeholder='Insert Your Code Here'
-                size='sm'
-                my={1}
-                border={0}
-                bg={bg_c}
-                _focus={focus}
-            />
-            <Button onClick={handleData} >Add Code</Button>
+                <Textarea
+                    value={codeBlock}
+                    onChange={(e) => setCodeBlock(e.target.value)}
+                    placeholder='Insert Your Code Here'
+                    size='sm'
+                    my={1}
+                    border={0}
+                    bg={bg_c}
+                    _focus={focus}
+                />
+                <Stack  >
+                    <Button type='submit' >Add Code</Button>
+                    <Button onClick={() => handleBlock(false)} >Go Back</Button>
+                </Stack>
+            </form>
             {
-                blocks.map((block, index) => {
-                    return <div key={index} >
-                        <Heading as='h4' size='md' textAlign={'left'} mb='1' >
-                            {block.title}
-                        </Heading>
-                        <CodeBlocks code={block.codeText} language={block.selectedLang} />
-                        <Divider mt={3} />
-                    </div>
+                state?.docs?.map((block, index) => {
+                    if (block.contentType === 'code') {
+                        return <div key={index} >
+                            <Heading as='h4' size='md' my={2} textAlign={'left'} mb='1' >
+                                {block.codeTitle}
+                            </Heading>
+                            <CodeBlocks code={block.codeBlock} language={block.codeLang} />
+                            <Divider mt={3} />
+                        </div>
+                    }
                 })
             }
         </>
