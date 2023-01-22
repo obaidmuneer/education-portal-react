@@ -1,10 +1,14 @@
-import { Badge, Box, HStack, IconButton, Spacer, StackDivider, Text, VStack } from '@chakra-ui/react'
+import { Badge, Box, HStack, IconButton, Link, Spacer, StackDivider, Text, VStack } from '@chakra-ui/react'
+import axios from 'axios'
 import { useContext } from 'react'
 import { FaTrash } from 'react-icons/fa'
 import { GlobalContext } from '../../context/context'
+import useDelete from '../../hooks/deleteDoc'
 
-function DocList({ deleteTodo }) {
-    const { state } = useContext(GlobalContext)
+function DocList() {
+    const { state, dispatch } = useContext(GlobalContext)
+    const [handleDelete] = useDelete()
+    console.log(state.docs);
     if (state?.docs?.length === 0)
         return (
             <Box display={'flex'} justifyContent={'center'} >
@@ -33,13 +37,16 @@ function DocList({ deleteTodo }) {
 
     return (
         <VStack {...vStackProps}>
-            {state?.docs?.map((doc, index) => (
-                <HStack key={index}>
-                    <Text>{doc.text}</Text>
-                    <Spacer />
-                    <IconButton onClick={() => deleteTodo(state?.docs?._id)} {...buttonProps} />
-                </HStack>
-            ))}
+            {state?.docs?.map((doc, index) => {
+                if (!doc.isDeleted && doc.contentType === "assignment") {
+                    return <HStack key={index}>
+                        <Link href={doc.text} isExternal >{doc.text}</Link>
+                        {/* <Text>{doc.text}</Text> */}
+                        <Spacer />
+                        <IconButton onClick={() => handleDelete(doc._id, index)} {...buttonProps} />
+                    </HStack>
+                }
+            })}
         </VStack>
     )
 }

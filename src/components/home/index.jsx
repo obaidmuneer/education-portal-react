@@ -9,8 +9,11 @@ import {
 } from '@chakra-ui/react';
 import DocBody from '../docBody';
 import ClassId from '../classId';
+import { GlobalContext } from '../../context/context';
+import { useContext } from 'react';
 
 const Home = () => {
+    const { state } = useContext(GlobalContext)
     return (
         <div>
             <Container maxW={'5xl'}>
@@ -25,15 +28,26 @@ const Home = () => {
                         align={'center'}
                         spacing={{ base: 8, md: 10 }}
                         py={{ base: 5, md: 18 }}>
-                        <Heading
-                            fontWeight={600}
-                            fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}
-                            lineHeight={'110%'}>
-                            Class ID{' '}
-                            <Text as={'span'} color={'orange.400'}>
-                                AI
-                            </Text>
-                        </Heading>
+                        {
+                            state.classId ? <Heading
+                                fontWeight={600}
+                                fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}
+                                lineHeight={'110%'}>
+                                Class ID {' '}
+                                <Text as={'span'} color={'orange.400'}>
+                                    {state.classId.toUpperCase()}
+                                </Text>
+                            </Heading> :
+                                <Heading
+                                    fontWeight={600}
+                                    fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}
+                                    lineHeight={'110%'}>
+                                    Enter {' '}
+                                    <Text as={'span'} color={'orange.400'}>
+                                        CLASS ID
+                                    </Text>
+                                </Heading>
+                        }
 
                         {/* <Stack spacing={6} direction={'row'}>
                         <Button
@@ -51,7 +65,7 @@ const Home = () => {
 
                     </Stack>
                 </Hide>
-                <DocBody />
+                {state.classId ? <DocBody /> : null}
             </Container>
         </div>
     )

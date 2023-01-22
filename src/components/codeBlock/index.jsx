@@ -13,7 +13,7 @@ const CodeBlocks = ({ code, language }) => {
             showLineNumbers={true}
             theme={dracula}
             codeBlock
-            wrapLongLines={true}
+            wrapLines
         />
     )
 }

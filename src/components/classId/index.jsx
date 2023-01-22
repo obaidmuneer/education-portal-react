@@ -30,11 +30,15 @@ const ClassId = () => {
 
     const fetchData = async (id) => {
         try {
-            const res = await axios.get(`http://localhost:8080/api/v1/docs/${id}`)
+            const res = await axios.get(`${state.api}docs/${id}`)
             console.log(res);
             dispatch({
                 type: "docs",
                 payload: res.data.docs,
+            })
+            dispatch({
+                type: 'classId',
+                payload: id
             })
         } catch (error) {
             console.log(error.message);
@@ -46,7 +50,6 @@ const ClassId = () => {
         if (!id) return
         formik.setFieldValue("classId", id)
         fetchData(id);
-
     }, [])
 
     return (

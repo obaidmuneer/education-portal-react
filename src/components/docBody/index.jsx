@@ -39,24 +39,25 @@ export default function DocBody() {
                 <TabPanel>
 
                     {
-                        isCodeBlock ? <CodeForm /> : isFileUpload ? <SelectFile /> :
-                            <Stack direction={'row'} justifyContent='center' spacing={6}>
-                                <IconButton
-                                    onClick={() => setIsCodeBlock(true)}
-                                    variant='outline'
-                                    colorScheme='orange'
-                                    aria-label='Call Sage'
-                                    fontSize='20px'
-                                    icon={<BsCode />} />
+                        isCodeBlock ? <CodeForm handleBlock={setIsCodeBlock} /> :
+                            isFileUpload ? <SelectFile handleFile={setIsFileUpload} /> :
+                                <Stack direction={'row'} justifyContent='center' spacing={6}>
+                                    <IconButton
+                                        onClick={() => setIsCodeBlock(true)}
+                                        variant='outline'
+                                        colorScheme='orange'
+                                        aria-label='Call Sage'
+                                        fontSize='20px'
+                                        icon={<BsCode />} />
 
-                                <IconButton
-                                    onClick={() => setIsFileUpload(true)}
-                                    variant='outline'
-                                    colorScheme='orange'
-                                    aria-label='Call Sage'
-                                    fontSize='20px'
-                                    icon={<BsFilePdf />} />
-                            </Stack>
+                                    <IconButton
+                                        onClick={() => setIsFileUpload(true)}
+                                        variant='outline'
+                                        colorScheme='orange'
+                                        aria-label='Call Sage'
+                                        fontSize='20px'
+                                        icon={<BsFilePdf />} />
+                                </Stack>
 
                     }
 
