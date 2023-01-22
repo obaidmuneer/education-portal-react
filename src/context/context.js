@@ -7,9 +7,9 @@ let data = {
     classId:'',
     docs: [],
     api: window.location.href.includes("localhost") ?
-        "http://localhost:8080/api/v1"
+        "http://localhost:8080/api/v1/"
         :
-        "https://helpful-earmuffs-cod.cyclic.app/api/v1"
+        "https://busy-gray-caridea-tie.cyclic.app/api/v1/"
 };
 
 export default function ContextProvider({ children }) {
