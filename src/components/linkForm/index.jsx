@@ -14,7 +14,7 @@ let validationSchema = yup.object().shape({
 
 const LinkForm = () => {
     const { state, dispatch } = useContext(GlobalContext)
-
+    
     const formik = useFormik({
         initialValues: {
             link: '',
@@ -29,23 +29,19 @@ const LinkForm = () => {
 
     const fetchData = async ({ link }) => {
         try {
-            const res = await axios.post(`http://localhost:8080/api/v1/docs`, {
+            const res = await axios.post(`${state.api}docs`, {
                 text: link,
                 contentType: 'assignment',
-                classId: localStorage.getItem('classId')
+                classId: state.classId
             })
-            console.log(res.data);
-            // dispatch({
-            //     type: 'docs',
-            //     payload: res.data.docs
-            // })
+            console.log(res.data.doc);
+            dispatch({
+                type: 'docs',
+                payload: [res.data.doc, ...state.docs]
+            })
         } catch (error) {
             console.log(error.message);
         }
-    }
-
-    const handleData = async () => {
-        fetchData();
     }
 
     return (
