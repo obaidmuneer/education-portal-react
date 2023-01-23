@@ -8,7 +8,6 @@ import {
 
 const FormikInput = ({ color, icon, placeHolder, hideBtn, formik, nameLabel }) => {
     const c = color || 'orange';
-    const bg_c = useColorModeValue(`${c}.400`, `${c}.800`)
     const sec_c = useColorModeValue('white', 'gray.800')
 
     return (
@@ -31,7 +30,7 @@ const FormikInput = ({ color, icon, placeHolder, hideBtn, formik, nameLabel }) =
                 </FormControl>
                 {
                     !hideBtn && <IconButton
-                        bg={bg_c}
+                        bg={`${c}.400`}
                         color={sec_c}
                         _hover={{
                             bg: `${c}.600`,

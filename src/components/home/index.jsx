@@ -18,7 +18,7 @@ const Home = () => {
         <div>
             <Container maxW={'5xl'}>
                 <Show below='md'>
-                    <Center   >
+                    <Center my={2}>
                         <ClassId />
                     </Center>
                 </Show>

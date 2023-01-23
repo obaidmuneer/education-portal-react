@@ -6,6 +6,7 @@ import { GlobalContext } from '../../context/context';
 import FormikInput from '../formikInput';
 import { useFormik } from 'formik';
 import { GoDiffAdded } from 'react-icons/go';
+import { Box } from '@chakra-ui/react';
 
 
 let validationSchema = yup.object().shape({
@@ -23,6 +24,7 @@ const LinkForm = () => {
         onSubmit: (values, actions) => {
             fetchData(values)
             actions.setSubmitting(false)
+            actions.resetForm()
         },
     });
 
@@ -45,11 +47,11 @@ const LinkForm = () => {
     }
 
     return (
-        <div>
+        <Box mb={4} >
             <form onSubmit={formik.handleSubmit} >
                 <FormikInput formik={formik} nameLabel={'link'} placeHolder={'Enter Your Link Here'} icon={<GoDiffAdded />} color={'blue'} />
             </form>
-        </div>
+        </Box>
     )
 }
 
