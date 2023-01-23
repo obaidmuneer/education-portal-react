@@ -24,11 +24,15 @@ import {
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import ClassId from '../classId';
+import { useContext } from 'react';
+import { GlobalContext } from '../../context/context';
+import { Link as RouterLink } from 'react-router-dom'
 
-const Links = [{ title: 'Home', path: '' }, { title: 'Github', path: 'https://github.com/obaidmuneer' }];
+const Links = [{ title: 'Home', path: '/' }];
 
 const NavLink = ({ children, path }) => (
     <Link
+        as={RouterLink}
         px={2}
         py={1}
         rounded={'md'}
@@ -36,16 +40,19 @@ const NavLink = ({ children, path }) => (
             textDecoration: 'none',
             bg: useColorModeValue('gray.200', 'gray.700'),
         }}
-        href={path}>
+        to={path}
+    >
         {children}
     </Link>
 );
 
 
 export default function Navbar() {
+    const { state } = useContext(GlobalContext)
     const { colorMode, toggleColorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
 
+    const bg_c = useColorModeValue('gray.200', 'gray.700')
     return (
         <>
             <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
@@ -59,16 +66,30 @@ export default function Navbar() {
                     />
                     <HStack spacing={8} alignItems={'center'}>
                         <Show below='md' >
-                            <Heading
-                                fontWeight={600}
-                                fontSize={{ base: '2xl', sm: '3xl' }}
-                                lineHeight={'110%'}
-                            >
-                                Class ID{' '}
-                                <Text as={'span'} color={'orange.400'}>
-                                    AI
-                                </Text>
-                            </Heading>
+                            {
+                                state.classId ?
+                                    <Heading
+                                        fontWeight={600}
+                                        fontSize={{ base: '2xl', sm: '3xl' }}
+                                        lineHeight={'110%'}
+                                    >
+                                        Class ID {' '}
+                                        <Text as={'span'} color={'orange.400'}>
+                                            {state.classId.toUpperCase()}
+                                        </Text>
+                                    </Heading>
+                                    :
+                                    <Heading
+                                        fontWeight={600}
+                                        fontSize={{ base: '2xl', sm: '3xl' }}
+                                        lineHeight={'110%'}
+                                    >
+                                        Enter {' '}
+                                        <Text as={'span'} color={'orange.400'}>
+                                            CLASS ID
+                                        </Text>
+                                    </Heading>
+                            }
                         </Show>
                         <Show above='md' >
                             <Box>Sysborg Clone</Box>
@@ -97,37 +118,65 @@ export default function Navbar() {
                                 {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
                             </Button>
 
-                            <Menu>
-                                <MenuButton
-                                    as={Button}
-                                    rounded={'full'}
-                                    variant={'link'}
-                                    cursor={'pointer'}
-                                    minW={0}>
-                                    <Avatar
-                                        size={'sm'}
-                                        src={'https://avatars.dicebear.com/api/male/username.svg'}
-                                    />
-                                </MenuButton>
-                                <MenuList alignItems={'center'}>
-                                    <br />
-                                    <Center>
+                            {
+                                state.user ? <Menu>
+                                    <MenuButton
+                                        as={Button}
+                                        rounded={'full'}
+                                        variant={'link'}
+                                        cursor={'pointer'}
+                                        minW={0}>
                                         <Avatar
-                                            size={'2xl'}
+                                            size={'sm'}
                                             src={'https://avatars.dicebear.com/api/male/username.svg'}
                                         />
-                                    </Center>
-                                    <br />
-                                    <Center>
-                                        <p>Username</p>
-                                    </Center>
-                                    <br />
-                                    <MenuDivider />
-                                    <MenuItem>Your Servers</MenuItem>
-                                    <MenuItem>Account Settings</MenuItem>
-                                    <MenuItem>Logout</MenuItem>
-                                </MenuList>
-                            </Menu>
+                                    </MenuButton>
+                                    <MenuList alignItems={'center'}>
+                                        <br />
+                                        <Center>
+                                            <Avatar
+                                                size={'2xl'}
+                                                src={'https://avatars.dicebear.com/api/male/username.svg'}
+                                            />
+                                        </Center>
+                                        <br />
+                                        <Center>
+                                            <p>Username</p>
+                                        </Center>
+                                        <br />
+                                        <MenuDivider />
+                                        <MenuItem>Your Servers</MenuItem>
+                                        <MenuItem>Account Settings</MenuItem>
+                                        <MenuItem>Logout</MenuItem>
+                                    </MenuList>
+                                </Menu> : <Stack
+                                    flex={{ base: 1, md: 0 }}
+                                    justify={'flex-end'}
+                                    direction={'row'}
+                                    spacing={6}>
+                                    <Button
+                                        as={RouterLink}
+                                        fontSize={'sm'}
+                                        fontWeight={400}
+                                        variant={'link'}
+                                        to={'/signin'}>
+                                        Sign In
+                                    </Button>
+                                    <Button
+                                        display={{ base: 'none', md: 'inline-flex' }}
+                                        fontSize={'sm'}
+                                        as={RouterLink}
+                                        fontWeight={600}
+                                        color={'white'}
+                                        bg={'orange.400'}
+                                        to={'/signup'}
+                                        _hover={{
+                                            bg: 'orange.600',
+                                        }}>
+                                        Sign Up
+                                    </Button>
+                                </Stack>
+                            }
                         </Stack>
                     </Flex>
                 </Flex>
@@ -136,7 +185,7 @@ export default function Navbar() {
                     <Box pb={4} display={{ md: 'none' }}>
                         <Stack as={'nav'} spacing={4}>
                             {Links.map((link) => (
-                                <NavLink key={link}>{link}</NavLink>
+                                <NavLink key={link.title}>{link.title}</NavLink>
                             ))}
                         </Stack>
                     </Box>

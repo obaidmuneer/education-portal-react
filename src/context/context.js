@@ -4,7 +4,8 @@ export const GlobalContext = createContext("initialState");
 
 let data = {
     theme: "light",
-    classId:'',
+    user: null,
+    classId: '',
     docs: [],
     api: window.location.href.includes("localhost") ?
         "http://localhost:8080/api/v1/"
