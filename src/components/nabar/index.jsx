@@ -27,6 +27,7 @@ import ClassId from '../classId';
 import { useContext } from 'react';
 import { GlobalContext } from '../../context/context';
 import { Link as RouterLink } from 'react-router-dom'
+import axios from 'axios';
 
 const Links = [{ title: 'Home', path: '/' }];
 
@@ -48,9 +49,22 @@ const NavLink = ({ children, path }) => (
 
 
 export default function Navbar() {
-    const { state } = useContext(GlobalContext)
+    const { state, dispatch } = useContext(GlobalContext)
+    // console.log(state.user);
     const { colorMode, toggleColorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
+
+    const handleLogout = async () => {
+        try {
+            const result = await axios.get(`${state.api}users/logout`, { withCredentials: true })
+            console.log(result.data);
+            dispatch({
+                type: 'logout',
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const bg_c = useColorModeValue('gray.200', 'gray.700')
     return (
@@ -141,13 +155,13 @@ export default function Navbar() {
                                         </Center>
                                         <br />
                                         <Center>
-                                            <p>Username</p>
+                                            <p>{state?.user?.firstName} {state?.user?.lastName}</p>
                                         </Center>
                                         <br />
                                         <MenuDivider />
                                         <MenuItem>Your Servers</MenuItem>
                                         <MenuItem>Account Settings</MenuItem>
-                                        <MenuItem>Logout</MenuItem>
+                                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
                                     </MenuList>
                                 </Menu> : <Stack
                                     flex={{ base: 1, md: 0 }}
