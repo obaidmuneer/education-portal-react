@@ -9,7 +9,7 @@ export const reducer = (state, action) => {
     case "signin":
       return { ...state, user: action.payload };
     case "logout":
-      return { ...state, user: null };
+      return { ...state, user: false };
     default:
       return state;
   }
