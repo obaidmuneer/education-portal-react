@@ -1,15 +1,14 @@
-import './App.css';
-import Navbar from './components/nabar';
-import Home from './components/home';
-import { Box } from '@chakra-ui/react';
-import CDrawer from './components/cDrawer';
-import { Routes, Route, Navigate } from 'react-router-dom'
-import Signup from './components/signup';
-import Signin from './components/signin';
-import { useContext } from 'react';
-import { GlobalContext } from './context/context';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import axios from 'axios';
+import { Routes, Route, Navigate } from 'react-router-dom'
+import { Center, Spinner } from '@chakra-ui/react';
+import Home from './components/home';
+import CDrawer from './components/cDrawer';
+import Navbar from './components/nabar';
+import Signin from './components/signin';
+import Signup from './components/signup';
+import { GlobalContext } from './context/context';
+import './App.css';
 
 function App() {
   const { state, dispatch } = useContext(GlobalContext)
@@ -27,6 +26,10 @@ function App() {
         })
       } catch (error) {
         console.log(error);
+        dispatch({
+          type: 'signin',
+          payload: false
+        })
         console.log('please signin to enjoy all our features');
       }
     })()
@@ -34,21 +37,31 @@ function App() {
 
   return (
     <>
-      <Navbar />
-      {state.user ? <CDrawer /> : null}
-      <Box p={0} >
-        <Routes>
-          <Route path='/' element={<Home />} />
-          {
-            state?.user ? null : <>
-              <Route path='/signup' element={<Signup />} />
-              <Route path='/signin' element={<Signin />} />
-            </>
-          }
-          <Route path='*' element={<Navigate to={'/'} replace={true} />} />
-        </Routes>
-      </Box>
-
+      {
+        state.user === null ? <Center minH={'100vh'}  >
+          <Spinner color='orange.400' thickness='6px' minH={100} minW={100} speed='0.6s' emptyColor='gray' />
+        </Center>
+          : <Navbar />}
+      {
+        state.user === false ? <>
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/signup' element={<Signup />} />
+            <Route path='/signin' element={<Signin />} />
+            <Route path='*' element={<Navigate to={'/'} replace={true} />} />
+          </Routes>
+        </>
+          : null
+      }
+      {
+        state.user ? <>
+          <CDrawer />
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='*' element={<Navigate to={'/'} replace={true} />} />
+          </Routes>
+        </> : null
+      }
     </>
 
   )
