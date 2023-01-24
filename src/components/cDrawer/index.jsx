@@ -12,10 +12,13 @@ import {
     Avatar, AvatarBadge, AvatarGroup, Wrap, WrapItem, Text, Spacer, Icon, Box,
     useColorModeValue,
 } from '@chakra-ui/react'
+import { useContext } from 'react'
 import { BiMenuAltLeft } from 'react-icons/bi'
 import { FcBookmark, FcFeedback, FcSettings } from 'react-icons/fc'
+import { GlobalContext } from '../../context/context'
 
 export default function CDrawer() {
+    const { state } = useContext(GlobalContext)
     const { isOpen, onOpen, onClose } = useDisclosure()
     const sec_c = useColorModeValue('white', 'gray.800')
 
@@ -49,9 +52,9 @@ export default function CDrawer() {
 
                             <Button width={'full'} justifyContent='flex-start' variant='ghost'>
                                 <Box width={10} >
-                                    <Avatar size={'sm'} name='Dan Abrahmov' src='https://avatars.githubusercontent.com/u/96944978?v=4' />
+                                    <Avatar size={'sm'} name={state?.user?.firstName} src={state?.user?.profilePhoto || 'https://avatars.dicebear.com/api/male/username.svg'} />
                                 </Box>
-                                <Text ml={2} >Obaid Muneer</Text>
+                                <Text ml={2} >{state?.user?.firstName} {state?.user?.lastName}</Text>
                             </Button>
                             <Button width={'full'} justifyContent='flex-start' variant='ghost'>
                                 <Box width={10} >

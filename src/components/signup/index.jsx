@@ -14,6 +14,7 @@ import {
     useColorModeValue,
     Link,
 } from '@chakra-ui/react';
+import {Link as RouterLink} from 'react-router-dom'
 import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
@@ -22,11 +23,11 @@ export default function Signup() {
 
     return (
         <Flex
-            minH={'100vh'}
+            // minH={'100vh'}
             align={'center'}
             justify={'center'}
             bg={useColorModeValue('gray.50', 'gray.800')}>
-            <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
+            <Stack spacing={4} mx={'auto'} maxW={'lg'} py={12} px={6}>
                 <Stack align={'center'}>
                     <Heading fontSize={'4xl'} textAlign={'center'}>
                         Sign up
@@ -88,7 +89,7 @@ export default function Signup() {
                         </Stack>
                         <Stack pt={6}>
                             <Text align={'center'}>
-                                Already a user? <Link color={'blue.400'}>Login</Link>
+                                Already a user? <Link as={RouterLink} to={'/signin'} color={'blue.400'}>Login</Link>
                             </Text>
                         </Stack>
                     </Stack>
