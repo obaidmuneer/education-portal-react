@@ -8,6 +8,8 @@ export const reducer = (state, action) => {
       return { ...state, classId: action.payload };
     case "signin":
       return { ...state, user: action.payload };
+    case "bookmark":
+      return { ...state, user: { ...state.user, bookmark: action.payload } };
     case "logout":
       return { ...state, user: false };
     default:
