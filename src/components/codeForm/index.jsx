@@ -1,14 +1,18 @@
 import { useState, useContext } from 'react'
-import { Textarea, Text, Button, useColorModeValue, Select, Heading, Divider, Input, Stack } from '@chakra-ui/react'
+import { Textarea, IconButton, Button, useColorModeValue, Select, Heading, Divider, Input, Stack, Box, Spacer } from '@chakra-ui/react'
 import Form from '../formikInput'
 import CodeBlocks from '../codeBlock'
+import { BsStar, BsStarFill } from 'react-icons/bs'
+
 import axios from 'axios'
 import { GlobalContext } from '../../context/context'
+import useBookmark from '../../hooks/useBookmark'
 
 const supportedLanguage = ['html', 'css', 'javascript', 'js', 'jsx', 'json', 'text', 'typescript', 'ts', 'tsx', 'python']
 
 const CodeForm = ({ handleBlock }) => {
     const { state, dispatch } = useContext(GlobalContext)
+    const [addBookmark, removeBookmark] = useBookmark()
     const [codeTitle, setCodeTitle] = useState('')
     const [selectedLang, setSelectedLang] = useState('')
     const [codeBlock, setCodeBlock] = useState('')
@@ -94,9 +98,16 @@ const CodeForm = ({ handleBlock }) => {
                 state?.docs?.map((block, index) => {
                     if (block.contentType === 'code') {
                         return <div key={index} >
-                            <Heading as='h4' size='md' my={2} textAlign={'left'} mb='1' >
-                                {block.codeTitle}
-                            </Heading>
+                            <Stack direction={'row'} alignItems='center' my={2} >
+                                <Heading as='h4' size='md' >
+                                    {block.codeTitle}
+                                </Heading>
+                                <Spacer />
+                                {state.user ? state?.user?.bookmark?.indexOf(block._id) > -1 ?
+                                    <IconButton color={'orange.400'} icon={<BsStarFill />} onClick={() => removeBookmark(block._id)} /> :
+                                    <IconButton icon={<BsStar />} onClick={() => addBookmark(block._id)} /> : null
+                                }
+                            </Stack>
                             <CodeBlocks code={block.codeBlock} language={block.codeLang} />
                             <Divider mt={3} />
                         </div>

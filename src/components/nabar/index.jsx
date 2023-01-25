@@ -1,3 +1,6 @@
+import { useContext } from 'react';
+import axios from 'axios';
+import { Link as RouterLink } from 'react-router-dom'
 import {
     Box,
     Flex,
@@ -23,11 +26,9 @@ import {
 } from '@chakra-ui/react';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
+
 import ClassId from '../classId';
-import { useContext } from 'react';
 import { GlobalContext } from '../../context/context';
-import { Link as RouterLink } from 'react-router-dom'
-import axios from 'axios';
 
 const Links = [{ title: 'Home', path: '/' }];
 

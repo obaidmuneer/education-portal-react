@@ -1,32 +1,16 @@
-import { Badge, Box, HStack, IconButton, Link, Spacer, StackDivider, Text, VStack } from '@chakra-ui/react'
-import { useState } from 'react'
+import { Badge, Box, HStack, IconButton, Link, Spacer, StackDivider, VStack } from '@chakra-ui/react'
 import { useContext } from 'react'
 import { FaTrash } from 'react-icons/fa'
-import { BsStar, BsStarFill } from 'react-icons/bs'
+import { BsStarFill } from 'react-icons/bs'
 import { GlobalContext } from '../../context/context'
-import useDelete from '../../hooks/deleteDoc'
-import axios from 'axios'
+import CAlert from '../ui-component/CAlert'
+import useDelete from '../../hooks/useDelete'
+import useBookmark from '../../hooks/useBookmark'
 
 function DocList() {
     const { state, dispatch } = useContext(GlobalContext)
     const [handleDelete] = useDelete()
-
-    const handleBookmark = async (id) => {
-        const result = await axios.put(`${state.api}docs/add-bookmark`, { id }, { withCredentials: true })
-        console.log(result);
-        dispatch({
-            type: 'bookmark',
-            payload: result.data.bookmark
-        })
-    }
-    const handleRemoveBookmark = async (id) => {
-        const result = await axios.delete(`${state.api}docs/remove-bookmark/${id}`, { withCredentials: true })
-        console.log(result);
-        dispatch({
-            type: 'bookmark',
-            payload: result.data.bookmark
-        })
-    }
+    const [addBookmark, removeBookmark] = useBookmark()
 
     // console.log(state.docs);
     if (state?.docs?.length === 0)
@@ -63,9 +47,10 @@ function DocList() {
                         <Link href={doc.text} isExternal >{doc.text}</Link>
                         {/* <Text>{doc.text}</Text> */}
                         <Spacer />
-                        {state.user.bookmark.indexOf(doc._id) > -1 ?
-                            <IconButton color={'orange.400'} icon={<BsStarFill />} onClick={() => handleRemoveBookmark(doc._id)} /> :
-                            <IconButton icon={<BsStar />} onClick={() => handleBookmark(doc._id)} />
+
+                        {state?.user?.bookmark?.indexOf(doc._id) > -1 ?
+                            <IconButton color={'orange.400'} icon={<BsStarFill />} onClick={() => removeBookmark(doc._id)} /> :
+                            <CAlert id={doc._id} />
                         }
                         <IconButton onClick={() => handleDelete(doc._id, index)} {...buttonProps} />
                     </HStack>

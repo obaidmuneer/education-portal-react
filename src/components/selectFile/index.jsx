@@ -17,14 +17,17 @@ import {
 } from "@chakra-ui/react";
 import { GlobalContext } from "../../context/context";
 import axios from "axios";
-import { BsFileCode } from "react-icons/bs";
+import { BsFileCode, BsStar, BsStarFill } from "react-icons/bs";
 import { FaTrash } from "react-icons/fa";
-import useDelete from "../../hooks/deleteDoc";
+import useDelete from "../../hooks/useDelete";
+import useBookmark from '../../hooks/useBookmark'
+
 
 
 export default function SelectFile({ handleFile }) {
     const { state, dispatch } = useContext(GlobalContext)
     const [handleDelete] = useDelete()
+    const [addBookmark, removeBookmark] = useBookmark()
     const [title, setTitle] = useState('')
     const [file, setFile] = useState('')
 
@@ -150,6 +153,10 @@ export default function SelectFile({ handleFile }) {
                                     mx={2} /> <Link href={doc.file} isExternal > {doc.title}</Link>
                                 {/* <Text>{doc.text}</Text> */}
                                 <Spacer />
+                                {state.user ? state?.user?.bookmark?.indexOf(doc._id) > -1 ?
+                                    <IconButton color={'orange.400'} icon={<BsStarFill />} onClick={() => removeBookmark(doc._id)} /> :
+                                    <IconButton icon={<BsStar />} onClick={() => addBookmark(doc._id)} /> : null
+                                }
                                 <IconButton onClick={() => handleDelete(doc._id, index)} {...buttonProps} />
                             </HStack>
                             <Divider mt={3} />
