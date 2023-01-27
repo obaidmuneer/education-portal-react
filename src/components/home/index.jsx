@@ -6,6 +6,7 @@ import {
     Show,
     Hide,
     Center,
+    Spinner,
 } from '@chakra-ui/react';
 import DocBody from '../docBody';
 import ClassId from '../classId';
@@ -29,24 +30,24 @@ const Home = () => {
                         spacing={{ base: 8, md: 10 }}
                         py={{ base: 5, md: 18 }}>
                         {
-                            state.classId ? <Heading
-                                fontWeight={600}
-                                fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}
-                                lineHeight={'110%'}>
-                                Class ID {' '}
-                                <Text as={'span'} color={'orange.400'}>
-                                    {state.classId.toUpperCase()}
-                                </Text>
-                            </Heading> :
-                                <Heading
+                            state.classId === null ? <Spinner color='orange.400' thickness='4px' size={'xl'}  speed='0.6s' emptyColor='gray' /> :
+                                state.classId ? <Heading
                                     fontWeight={600}
                                     fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}
                                     lineHeight={'110%'}>
-                                    Enter {' '}
+                                    Class ID {' '}
                                     <Text as={'span'} color={'orange.400'}>
-                                        CLASS ID
+                                        {state.classId.toUpperCase()}
                                     </Text>
-                                </Heading>
+                                </Heading> :<Heading
+                                        fontWeight={600}
+                                        fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}
+                                        lineHeight={'110%'}>
+                                        Enter {' '}
+                                        <Text as={'span'} color={'orange.400'}>
+                                            CLASS ID
+                                        </Text>
+                                    </Heading>
                         }
 
                         {/* <Stack spacing={6} direction={'row'}>

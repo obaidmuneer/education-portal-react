@@ -47,7 +47,14 @@ const ClassId = () => {
 
     useEffect(() => {
         const id = localStorage.getItem('classId')
-        if (!id) return
+
+        if (!id) {
+            dispatch({
+                type: 'classId',
+                payload: ''
+            })
+            return
+        }
         formik.setFieldValue("classId", id)
         fetchData(id);
     }, [])
