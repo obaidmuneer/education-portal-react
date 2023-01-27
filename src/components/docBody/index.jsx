@@ -34,7 +34,7 @@ export default function DocBody() {
                             <LinkForm />
                         </Box>
                     </Center>
-                    <DocList />
+                    <DocList type="assignment" />
                 </TabPanel>
                 <TabPanel>
 

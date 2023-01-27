@@ -160,8 +160,8 @@ export default function Navbar() {
                                         </Center>
                                         <br />
                                         <MenuDivider />
-                                        <MenuItem>Your Servers</MenuItem>
-                                        <MenuItem>Account Settings</MenuItem>
+                                        <MenuItem>Profile Setting</MenuItem>
+                                        <MenuItem>Change Password</MenuItem>
                                         <MenuItem onClick={handleLogout}>Logout</MenuItem>
                                     </MenuList>
                                 </Menu> : <Stack

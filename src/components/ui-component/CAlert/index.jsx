@@ -12,7 +12,7 @@ import { GlobalContext } from "../../../context/context"
 export default function CAlert({ id }) {
     const { state } = useContext(GlobalContext)
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const [addBookmark] = useBookmark()
+    const { addBookmark, isLoading } = useBookmark()
     const cancelRef = useRef()
 
     const handleAlert = () => {
@@ -25,10 +25,7 @@ export default function CAlert({ id }) {
 
     return (
         <>
-            {/* <Button colorScheme='red' onClick={onOpen}>
-                Delete Customer
-            </Button> */}
-            <IconButton icon={<BsStar />} onClick={() => handleAlert()} />
+            <IconButton icon={<BsStar />} onClick={() => handleAlert()} isLoading={isLoading} />
 
             <AlertDialog
                 isOpen={isOpen}

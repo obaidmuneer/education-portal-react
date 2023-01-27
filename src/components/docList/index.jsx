@@ -1,16 +1,21 @@
-import { Badge, Box, HStack, IconButton, Link, Spacer, StackDivider, VStack } from '@chakra-ui/react'
+import {
+    Badge, Box, Heading, HStack,
+    IconButton, Link, Spacer,
+    Stack, StackDivider, VStack
+} from '@chakra-ui/react'
 import { useContext } from 'react'
 import { FaTrash } from 'react-icons/fa'
-import { BsStarFill } from 'react-icons/bs'
+import { BsFileCode, BsStarFill } from 'react-icons/bs'
 import { GlobalContext } from '../../context/context'
 import CAlert from '../ui-component/CAlert'
 import useDelete from '../../hooks/useDelete'
 import useBookmark from '../../hooks/useBookmark'
+import CodeBlocks from '../codeBlock'
 
-function DocList() {
-    const { state, dispatch } = useContext(GlobalContext)
+function DocList({ type }) {
+    const { state } = useContext(GlobalContext)
     const [handleDelete] = useDelete()
-    const [addBookmark, removeBookmark] = useBookmark()
+    const { removeBookmark, isLoading } = useBookmark()
 
     // console.log(state.docs);
     if (state?.docs?.length === 0)
@@ -25,12 +30,13 @@ function DocList() {
     const vStackProps = {
         p: '2',
         w: '100%',
+        mt: 2,
         // maxW: { base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' },
         // borderColor: 'gray.100',
         borderWidth: '1px',
         borderRadius: 'lg',
         alignItems: 'space-between',
-        divider: <StackDivider />
+        divider: <StackDivider />,
     }
 
     const buttonProps = {
@@ -42,18 +48,37 @@ function DocList() {
     return (
         <VStack {...vStackProps}>
             {state?.docs?.map((doc, index) => {
-                if (!doc.isDeleted && doc.contentType === "assignment") {
-                    return <HStack key={index}>
-                        <Link href={doc.text} isExternal >{doc.text}</Link>
-                        {/* <Text>{doc.text}</Text> */}
-                        <Spacer />
+                if (!doc.isDeleted && doc.contentType === type) {
+                    return <Stack key={index} >
+                        <HStack>
+                            {doc.contentType === "assignment" ? <Link href={doc.text} isExternal >{doc.text}</Link> : doc.contentType === "file" ? <>
+                                <IconButton
+                                    variant='outline'
+                                    colorScheme='blue'
+                                    fontSize='20px'
+                                    icon={<BsFileCode />}
+                                    mx={2} /> <Link href={doc.file} isExternal > {doc.title}</Link></> :
+                                <Heading as='h4' size='md' >
+                                    {doc.codeTitle}
+                                </Heading>}
+                            <Spacer />
 
-                        {state?.user?.bookmark?.indexOf(doc._id) > -1 ?
-                            <IconButton color={'orange.400'} icon={<BsStarFill />} onClick={() => removeBookmark(doc._id)} /> :
-                            <CAlert id={doc._id} />
+                            {/* {state?.user?.bookmark?.indexOf(doc._id) > -1 ?
+                                <IconButton color={'orange.400'} icon={<BsStarFill />} onClick={() => removeBookmark(doc._id)} /> :
+                                <CAlert id={doc._id} />
+                            } */}
+                            {state?.user?.bookmark?.findIndex(e => e._id === doc._id) > -1 ?
+                                <IconButton color={'orange.400'} icon={<BsStarFill />} onClick={() => removeBookmark(doc._id)} 
+                                isLoading={isLoading} /> :
+                                <CAlert id={doc._id} />
+                            }
+                            <IconButton onClick={() => handleDelete(doc._id, index)} {...buttonProps} />
+
+                        </HStack>
+                        {
+                            type === "code" ? <CodeBlocks code={doc.codeBlock} language={doc.codeLang} /> : null
                         }
-                        <IconButton onClick={() => handleDelete(doc._id, index)} {...buttonProps} />
-                    </HStack>
+                    </Stack>
                 }
             })}
         </VStack>
