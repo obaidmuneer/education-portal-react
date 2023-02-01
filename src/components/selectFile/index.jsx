@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
+import axios from "axios";
 import {
     AspectRatio,
     Box,
     Button,
     Container,
-    Heading,
     Input,
     Stack,
     Text,
