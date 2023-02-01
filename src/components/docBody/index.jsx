@@ -8,7 +8,8 @@ import {
     Tabs,
     Tab,
     IconButton,
-    Stack
+    Stack,
+    useColorModeValue
 } from '@chakra-ui/react';
 import { BsCode, BsFilePdf } from 'react-icons/bs';
 
@@ -22,74 +23,47 @@ export default function DocBody() {
     const [isFileUpload, setIsFileUpload] = useState(false)
 
     return (
-        <Tabs isFitted variant='enclosed'>
-            <TabList mb='1em'>
-                <Tab>Post Your Link</Tab>
-                <Tab>Post Study Material</Tab>
-            </TabList>
-            <TabPanels>
-                <TabPanel>
-                    <Center>
-                        <Box w={600} >
-                            <LinkForm />
-                        </Box>
+        <>
+            <Center>
+                <Box
+                    maxW={'xxl'}
+                    w={'full'}
+                    h={'full'}
+                    bg={useColorModeValue('white', 'gray.900')}
+                    boxShadow={'2xl'}
+                    rounded={'lg'}
+                    p={6}
+                    textAlign={'center'}>
+                    <Center >
+                        <LinkForm />
                     </Center>
-                    <DocList type="assignment" />
-                </TabPanel>
-                <TabPanel>
-
-                    {
-                        isCodeBlock ? <CodeForm handleBlock={setIsCodeBlock} /> :
-                            isFileUpload ? <SelectFile handleFile={setIsFileUpload} /> :
-                                <Stack direction={'row'} justifyContent='center' spacing={6}>
-                                    <IconButton
-                                        onClick={() => setIsCodeBlock(true)}
-                                        variant='outline'
-                                        colorScheme='orange'
-                                        aria-label='Call Sage'
-                                        fontSize='20px'
-                                        icon={<BsCode />} />
-
-                                    <IconButton
-                                        onClick={() => setIsFileUpload(true)}
-                                        variant='outline'
-                                        colorScheme='orange'
-                                        aria-label='Call Sage'
-                                        fontSize='20px'
-                                        icon={<BsFilePdf />} />
-                                </Stack>
-
-                    }
+                    {/* <DocList type="assignment" />
+                    <DocList type="file" />
+                    <DocList type="code" /> */}
 
 
+                    <Tabs isFitted variant='enclosed'>
+                        <TabList mb='1em'>
+                            <Tab>Links</Tab>
+                            <Tab>Files</Tab>
+                            <Tab>Codes</Tab>
+                        </TabList>
+                        <TabPanels>
+                            <TabPanel>
+                                <DocList type="assignment" />
+                            </TabPanel>
+                            <TabPanel>
+                                <DocList type="file" />
+                            </TabPanel>
+                            <TabPanel>
+                                <DocList type="code" />
+                            </TabPanel>
+                        </TabPanels>
+                    </Tabs>
+                </Box>
 
-                    {/* <SocialButton label={'Twitter'} href={'#'}>
-                <FaTwitter />
-            </SocialButton>
-            <SocialButton label={'YouTube'} href={'#'}>
-                <FaYoutube />
-            </SocialButton>
-            <SocialButton label={'Instagram'} href={'#'}>
-                <FaInstagram />
-            </SocialButton> */}
-                </TabPanel>
-            </TabPanels>
-        </Tabs>
+            </Center>
+
+        </>
     );
 }
-
-{/* <Center>
-            <Box
-                maxW={'xxl'}
-                w={'full'}
-                bg={useColorModeValue('white', 'gray.900')}
-                boxShadow={'2xl'}
-                rounded={'lg'}
-                p={6}
-                textAlign={'center'}>
-
-               
-
-            </Box>
-        </Center> */}
-

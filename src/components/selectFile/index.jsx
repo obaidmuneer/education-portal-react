@@ -11,21 +11,19 @@ import {
     useColorModeValue
 } from "@chakra-ui/react";
 import { GlobalContext } from "../../context/context";
-import axios from "axios";
 import { FaTrash } from "react-icons/fa";
-import useDelete from "../../hooks/useDelete";
-import useBookmark from '../../hooks/useBookmark'
-import DocList from "../docList";
 
 
 
-export default function SelectFile({ handleFile }) {
+export default function SelectFile() {
     const { state, dispatch } = useContext(GlobalContext)
     const [title, setTitle] = useState('')
     const [file, setFile] = useState('')
+    const [preview, setPreview] = useState('')
+
 
     const handleData = async () => {
-        console.log(file.target.files[0]);
+        // console.log(file.target.files[0]);
         let formData = new FormData();
 
         formData.append("myFile", file.target.files[0]);
@@ -54,66 +52,73 @@ export default function SelectFile({ handleFile }) {
         'aria-label': 'delete',
     }
     return (
-        <Container my="12">
+        <Container >
             <Stack alignItems={'center'} >
-                <AspectRatio width="64" ratio={1}>
-                    <Box
-                        borderColor="gray.300"
-                        borderStyle="dashed"
-                        borderWidth="2px"
-                        rounded="md"
-                        shadow="sm"
-                        role="group"
-                        transition="all 150ms ease-in-out"
-                        _hover={{
-                            shadow: "md"
-                        }}
-                        initial="rest"
-                        animate="rest"
-                        whilehover="hover"
-                    >
+                {
+                    preview ? <img src={preview} alt="my file" /> : <AspectRatio width="64" ratio={1}>
+                        <Box
+                            borderColor="gray.300"
+                            borderStyle="dashed"
+                            borderWidth="2px"
+                            rounded="md"
+                            shadow="sm"
+                            role="group"
+                            transition="all 150ms ease-in-out"
+                            _hover={{
+                                shadow: "md"
+                            }}
+                            initial="rest"
+                            animate="rest"
+                            whilehover="hover"
+                        >
 
-                        <Box position="relative" height="100%" width="500%">
-                            <Box
-                                position="absolute"
-                                top="0"
-                                left="0"
-                                height="100%"
-                                width="100%"
-                                display="flex"
-                                flexDirection="column"
-                            >
-                                <Stack
+                            <Box position="relative" height="100%" width="500%">
+                                <Box
+                                    position="absolute"
+                                    top="0"
+                                    left="0"
                                     height="100%"
                                     width="100%"
                                     display="flex"
-                                    alignItems="center"
-                                    justify="center"
-                                    spacing="4"
+                                    flexDirection="column"
                                 >
+                                    <Stack
+                                        height="100%"
+                                        width="100%"
+                                        display="flex"
+                                        alignItems="center"
+                                        justify="center"
+                                        spacing="4"
+                                    >
 
-                                    <Stack p="8" textAlign="center" spacing="1">
-                                        <Heading fontSize="lg" color="gray.700" fontWeight="bold">
-                                            Drop File here
-                                        </Heading>
-                                        <Text fontWeight="light">or click to upload</Text>
+                                        <Stack p="8" textAlign="center" spacing="1">
+                                            <Text fontWeight="light">
+                                                {file ? `${file.target.files[0].name} selected` : 'Click to upload'}
+                                            </Text>
+                                        </Stack>
                                     </Stack>
-                                </Stack>
+                                </Box>
+                                <Input
+                                    type="file"
+                                    height="100%"
+                                    width="100%"
+                                    position="absolute"
+                                    top="0"
+                                    left="0"
+                                    opacity="0"
+                                    aria-hidden="true"
+                                    onChange={(e) => {
+                                        setFile(e)
+                                        if (e.target.files[0].type.split('/')[0] === 'image') {
+                                            let url = URL.createObjectURL(e.target.files[0])
+                                            setPreview(url)
+                                        }
+                                    }}
+                                />
                             </Box>
-                            <Input
-                                type="file"
-                                height="100%"
-                                width="100%"
-                                position="absolute"
-                                top="0"
-                                left="0"
-                                opacity="0"
-                                aria-hidden="true"
-                                onChange={(e) => setFile(e)}
-                            />
                         </Box>
-                    </Box>
-                </AspectRatio>
+                    </AspectRatio>
+                }
                 <Box display={'flex'} justifyContent='space-between' >
                     <Input
                         bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}
@@ -130,10 +135,9 @@ export default function SelectFile({ handleFile }) {
                         value={title}
                     />
                     <Button onClick={handleData} >Upload</Button>
-                    <Button mx={1} onClick={() => { handleFile(false) }} >Go Back</Button>
                 </Box>
             </Stack>
-            <DocList type={'file'} />
+            {/* <DocList type={'file'} /> */}
         </Container>
     );
 }

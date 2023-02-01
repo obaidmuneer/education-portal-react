@@ -3,10 +3,19 @@ import axios from 'axios';
 import * as yup from 'yup';
 
 import { GlobalContext } from '../../context/context';
-import FormikInput from '../formikInput';
 import { useFormik } from 'formik';
 import { GoDiffAdded } from 'react-icons/go';
-import { Box } from '@chakra-ui/react';
+import {
+    Stack, Box,
+    FormControl, FormErrorMessage,
+    useColorModeValue,
+    Input, IconButton, InputRightElement, Button,
+    InputGroup,
+} from '@chakra-ui/react';
+import { BsCode } from 'react-icons/bs';
+import SelectFile from '../selectFile';
+import CModal from '../ui-component/CModal';
+import CodeForm from '../codeForm';
 
 
 let validationSchema = yup.object().shape({
@@ -15,7 +24,7 @@ let validationSchema = yup.object().shape({
 
 const LinkForm = () => {
     const { state, dispatch } = useContext(GlobalContext)
-    
+
     const formik = useFormik({
         initialValues: {
             link: '',
@@ -47,10 +56,46 @@ const LinkForm = () => {
     }
 
     return (
-        <Box mb={4} >
-            <form onSubmit={formik.handleSubmit} >
-                <FormikInput formik={formik} nameLabel={'link'} placeHolder={'Enter Your Link Here'} icon={<GoDiffAdded />} color={'blue'} />
-            </form>
+        <Box mb={4} width='full'>
+            <Stack as={'form'} onSubmit={formik.handleSubmit} direction={'row'}  >
+                <FormControl isInvalid={formik.errors.link && formik.touched.link}>
+                    <InputGroup>
+                        <Input
+                            bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}
+                            border={0}
+                            _focus={{
+                                bg: 'whiteAlpha.300',
+                            }}
+                            id={'link'}
+                            name={'link'}
+                            value={formik.values.link}
+                            onChange={formik.handleChange}
+                            placeholder={'Enter Your Link Here'}
+
+                        />
+                        <InputRightElement>
+                            <CModal isCode={true}  >
+                                <CodeForm />
+                            </CModal>
+                        </InputRightElement>
+                    </InputGroup>
+                    <FormErrorMessage>{formik.errors.link}</FormErrorMessage>
+                </FormControl>
+                <IconButton
+                    bg={`blue.400`}
+                    color={useColorModeValue('white', 'gray.800')}
+                    _hover={{
+                        bg: `blue.600`,
+                    }}
+                    aria-label="add link"
+                    icon={<GoDiffAdded />}
+                    isLoading={formik.isSubmitting}
+                    type='submit'
+                />
+                <CModal >
+                    <SelectFile />
+                </CModal>
+            </Stack>
         </Box>
     )
 }
