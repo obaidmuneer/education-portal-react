@@ -17,6 +17,15 @@ const CodeForm = ({ handleBlock }) => {
     const [selectedLang, setSelectedLang] = useState('')
     const [codeBlock, setCodeBlock] = useState('')
 
+    const checkCode = async (e) => {
+        setCodeBlock(e.target.value)
+        let formData = new FormData()
+        formData.append('content', e.target.value)
+        const res = await axios.post('https://dpaste.com/api/v2/guess-syntax/', formData)
+        // console.log(res.data[1]);
+        setSelectedLang(res.data[1])
+    }
+
     const handleData = async (e) => {
         e.preventDefault()
         const [select, tit, code] = e.target
@@ -47,21 +56,7 @@ const CodeForm = ({ handleBlock }) => {
     return (
         <>
             <form onSubmit={handleData}>
-                <Select
-                    bg={bg_c}
-                    _focus={focus}
-                    border={0}
 
-                    my='1'
-                    placeholder='Select Language'
-                    onChange={(e) => setSelectedLang(e.target.value)}
-                    value={selectedLang} >
-                    {
-                        supportedLanguage.map((lang, index) => {
-                            return <option key={index} value={lang} >{lang}</option>
-                        })
-                    }
-                </Select>
 
                 <Input
                     bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}
@@ -78,7 +73,7 @@ const CodeForm = ({ handleBlock }) => {
 
                 <Textarea
                     value={codeBlock}
-                    onChange={(e) => setCodeBlock(e.target.value)}
+                    onChange={checkCode}
                     placeholder='Insert Your Code Here'
                     size='sm'
                     my={1}
@@ -86,12 +81,26 @@ const CodeForm = ({ handleBlock }) => {
                     bg={bg_c}
                     _focus={focus}
                 />
+                <Select
+                    bg={bg_c}
+                    _focus={focus}
+                    border={0}
+                    my='1'
+                    placeholder='Select Syntax'
+                    onChange={(e) => setSelectedLang(e.target.value)}
+                    value={selectedLang} >
+                    {
+                        supportedLanguage.map((lang, index) => {
+                            return <option key={index} value={lang} >{lang}</option>
+                        })
+                    }
+                </Select>
                 <Stack  >
                     <Button type='submit' >Add Code</Button>
-                    <Button onClick={() => handleBlock(false)} >Go Back</Button>
+                    {/* <Button onClick={() => handleBlock(false)} >Go Back</Button> */}
                 </Stack>
             </form>
-            <DocList type={"code"} />
+            {/* <DocList type={"code"} /> */}
         </>
     )
 }
