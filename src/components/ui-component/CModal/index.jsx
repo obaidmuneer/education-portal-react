@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import {
     Modal,
     ModalOverlay,
@@ -26,6 +26,13 @@ function CModal({ children, isCode }) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [overlay, setOverlay] = useState(<OverlayOne />)
 
+    const childrenWithProps = React.Children.map(children, child => {
+        if (React.isValidElement(child)) {
+            return React.cloneElement(child, { onClose })
+        }
+        return child
+    })
+
     return (
         <>
             <Tooltip label={isCode ? "Add Code" : 'Upload Files'} >
@@ -46,7 +53,7 @@ function CModal({ children, isCode }) {
                     <ModalHeader>{isCode ? "Add Code" : "Upload Your File"}</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        {children}
+                        {childrenWithProps}
                     </ModalBody>
                     <ModalFooter>
                         <Button onClick={onClose}>Close</Button>
