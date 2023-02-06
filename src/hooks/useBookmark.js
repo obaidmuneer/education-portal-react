@@ -14,11 +14,10 @@ function useBookmark() {
                 type: 'bookmark',
                 payload: result.data.bookmark
             })
-            setIsLoading(false)
         } catch (error) {
             console.log(error);
-            setIsLoading(false)
         }
+        setIsLoading(false)
     }
     const removeBookmark = async (id) => {
         try {
