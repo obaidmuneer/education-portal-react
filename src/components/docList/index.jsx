@@ -4,20 +4,15 @@ import {
     Stack, StackDivider, VStack
 } from '@chakra-ui/react'
 import { useContext } from 'react'
-import { FaTrash } from 'react-icons/fa'
-import { BsFileCode, BsStarFill } from 'react-icons/bs'
+import { BsFileCode } from 'react-icons/bs'
 import { GlobalContext } from '../../context/context'
-import CAlert from '../ui-component/CAlert'
-import useDelete from '../../hooks/useDelete'
-import useBookmark from '../../hooks/useBookmark'
 import CodeBlocks from '../codeBlock'
+import DeleteButton from '../deleteButton'
+import BookmarkButton from '../bookmarkButton'
 
 function DocList({ type }) {
     const { state } = useContext(GlobalContext)
-    const [handleDelete] = useDelete()
-    const { removeBookmark, isLoading } = useBookmark()
 
-    // console.log(state.docs);
     if (state?.docs?.length === 0)
         return (
             <Box display={'flex'} justifyContent={'center'} >
@@ -39,12 +34,6 @@ function DocList({ type }) {
         divider: <StackDivider />,
     }
 
-    const buttonProps = {
-        icon: <FaTrash />,
-        isRound: true,
-        'aria-label': 'delete',
-    }
-
     return (
         <VStack {...vStackProps}>
             {state?.docs?.map((doc, index) => {
@@ -63,17 +52,8 @@ function DocList({ type }) {
                                 </Heading>}
                             <Spacer />
 
-                            {/* {state?.user?.bookmark?.indexOf(doc._id) > -1 ?
-                                <IconButton color={'orange.400'} icon={<BsStarFill />} onClick={() => removeBookmark(doc._id)} /> :
-                                <CAlert id={doc._id} />
-                            } */}
-                            {state?.user?.bookmark?.findIndex(e => e._id === doc._id) > -1 ?
-                                <IconButton color={'orange.400'} icon={<BsStarFill />} onClick={() => removeBookmark(doc._id)} 
-                                isLoading={isLoading} /> :
-                                <CAlert id={doc._id} />
-                            }
-                            <IconButton onClick={() => handleDelete(doc._id, index)} {...buttonProps} />
-
+                            <BookmarkButton docId={doc._id} />
+                            <DeleteButton docId={doc._id} i={index} />
                         </HStack>
                         {
                             type === "code" ? <CodeBlocks code={doc.codeBlock} language={doc.codeLang} /> : null
