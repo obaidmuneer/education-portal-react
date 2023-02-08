@@ -9,6 +9,7 @@ import Signin from './components/signin';
 import Signup from './components/signup';
 import { GlobalContext } from './context/context';
 import './App.css';
+import RefreshButton from './components/refreshButton';
 
 function App() {
   const { state, dispatch } = useContext(GlobalContext)
@@ -44,6 +45,7 @@ function App() {
           : <Navbar />}
       {
         state.user === false ? <>
+          <RefreshButton />
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/signup' element={<Signup />} />
@@ -56,6 +58,7 @@ function App() {
       {
         state.user ? <>
           <CDrawer />
+          <RefreshButton />
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='*' element={<Navigate to={'/'} replace={true} />} />
