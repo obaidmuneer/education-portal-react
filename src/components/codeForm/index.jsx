@@ -1,18 +1,19 @@
 import { useState, useContext } from 'react'
-import { Textarea, IconButton, Button, useColorModeValue, Select, Heading, Divider, Input, Stack, Box, Spacer } from '@chakra-ui/react'
-import Form from '../formikInput'
-import CodeBlocks from '../codeBlock'
-import { BsStar, BsStarFill } from 'react-icons/bs'
-
 import axios from 'axios'
+import {
+    Textarea, Button, useColorModeValue,
+    Select, Input,
+    Stack, Box
+} from '@chakra-ui/react'
+
 import { GlobalContext } from '../../context/context'
-import useBookmark from '../../hooks/useBookmark'
-import DocList from '../docList'
+import useDoc from '../../hooks/useDoc'
 
 const supportedLanguage = ['html', 'css', 'javascript', 'js', 'jsx', 'json', 'text', 'typescript', 'ts', 'tsx', 'python']
 
-const CodeForm = ({ handleBlock }) => {
+const CodeForm = ({ onClose }) => {
     const { state, dispatch } = useContext(GlobalContext)
+    const { postCode, isLoading } = useDoc()
     const [codeTitle, setCodeTitle] = useState('')
     const [selectedLang, setSelectedLang] = useState('')
     const [codeBlock, setCodeBlock] = useState('')
@@ -32,22 +33,15 @@ const CodeForm = ({ handleBlock }) => {
         if (!select.value || !tit.value || !code.value) {
             return
         }
-        try {
-            const res = await axios.post(`${state.api}docs/code`, {
-                codeTitle,
-                codeBlock,
-                codeLang: selectedLang,
-                contentType: 'code',
-                classId: state.classId
-            })
-            console.log(res.data.doc);
-            dispatch({
-                type: 'docs',
-                payload: [res.data.doc, ...state.docs]
-            })
-        } catch (error) {
-            console.log(error.message);
+        const data = {
+            codeTitle,
+            codeBlock,
+            codeLang: selectedLang,
+            contentType: 'code',
+            classId: state.classId
         }
+        postCode(data)
+        onClose()
     }
 
     const bg_c = useColorModeValue('blackAlpha.100', 'whiteAlpha.100')
@@ -55,9 +49,7 @@ const CodeForm = ({ handleBlock }) => {
 
     return (
         <>
-            <form onSubmit={handleData}>
-
-
+            <Box as='form' onSubmit={handleData} >
                 <Input
                     bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}
                     border={0}
@@ -96,10 +88,10 @@ const CodeForm = ({ handleBlock }) => {
                     }
                 </Select>
                 <Stack  >
-                    <Button type='submit' >Add Code</Button>
+                    <Button type='submit' isLoading={isLoading} >Add Code</Button>
                     {/* <Button onClick={() => handleBlock(false)} >Go Back</Button> */}
                 </Stack>
-            </form>
+            </Box>
             {/* <DocList type={"code"} /> */}
         </>
     )

@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import axios from "axios";
 import {
     AspectRatio,
     Box,
@@ -10,64 +9,39 @@ import {
     Spinner,
     Stack,
     Text,
-    useColorModeValue,
-    useDisclosure
+    useColorModeValue
 } from "@chakra-ui/react";
 import { GlobalContext } from "../../context/context";
-import { FaTrash } from "react-icons/fa";
-
-
+import useDoc from "../../hooks/useDoc";
 
 export default function SelectFile(props) {
-    const { state, dispatch } = useContext(GlobalContext)
+    const { postFile, isLoading } = useDoc()
+    const { state } = useContext(GlobalContext)
     const [title, setTitle] = useState('')
     const [file, setFile] = useState('')
     const [preview, setPreview] = useState('')
-    const [isLoader, setIsLoader] = useState(false)
 
     const bgColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.100')
 
 
     const handleData = async () => {
-        try {
-            setIsLoader(true)
-            // console.log(file.target.files[0]);
-            let formData = new FormData();
-
-            formData.append("myFile", file.target.files[0]);
-            formData.append("title", title);
-            formData.append("contentType", 'file');
-            formData.append("classId", state.classId);
-            console.log(formData);
-            // console.log(title);
-            const res = await axios({
-                method: 'post',
-                url: `${state.api}docs/file`,
-                data: formData,
-                headers: { 'Content-Type': 'multipart/form-data' }
-            })
-            dispatch({
-                type: 'docs',
-                payload: [res.data.doc, ...state.docs]
-            })
-            props.onClose()
-        } catch (error) {
-            console.log(error);
-        }
-        setIsLoader(false)
+        // console.log(file.target.files[0]);
+        let formData = new FormData();
+        formData.append("myFile", file.target.files[0]);
+        formData.append("title", title);
+        formData.append("contentType", 'file');
+        formData.append("classId", state.classId);
+        // console.log(formData);
+        await postFile(formData)
+        props.onClose()
     }
 
-    const buttonProps = {
-        icon: <FaTrash />,
-        isRound: true,
-        'aria-label': 'delete',
-    }
     return (
         <Container >
-            {isLoader ? <Center minH={'36vh'}  >
+            {isLoading ? <Center minH={'36vh'}  >
                 <Spinner color='orange.400' thickness='6px' minH={100} minW={100} speed='0.6s' emptyColor='gray' />
             </Center> :
-                <Stack alignItems={'center'} >
+                <Stack alignItems={'center'} as="form" onSubmit={handleData} >
                     {
                         preview ? <img src={preview} alt="my file" /> : <AspectRatio width="64" ratio={1}>
                             <Box
@@ -134,7 +108,7 @@ export default function SelectFile(props) {
                             </Box>
                         </AspectRatio>
                     }
-                    <Box display={'flex'} justifyContent='space-between' >
+                    <Box display={'flex'}  >
                         <Input
                             bg={bgColor}
                             border={0}
@@ -149,10 +123,10 @@ export default function SelectFile(props) {
                             onChange={(e) => setTitle(e.target.value)}
                             value={title}
                         />
-                        <Button onClick={handleData} >Upload</Button>
+                        <Button type="submit" >Upload</Button>
                     </Box>
-                </Stack>}
-            {/* <DocList type={'file'} /> */}
+                </Stack>
+            }
         </Container>
     );
 }

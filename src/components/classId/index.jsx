@@ -1,18 +1,19 @@
-import { useState, useContext, useEffect } from 'react';
-import axios from 'axios';
-import * as yup from 'yup';
-
-import { BiSend } from 'react-icons/bi';
-import { GlobalContext } from '../../context/context';
+import { useContext, useEffect } from 'react';
 import FormikInput from '../formikInput';
 import { useFormik } from 'formik';
+import * as yup from 'yup';
+import useDoc from '../../hooks/useDoc';
+import { GlobalContext } from '../../context/context';
+
+import { BiSend } from 'react-icons/bi';
 
 let validationSchema = yup.object().shape({
     classId: yup.string().required('Please enter a Class ID'),
 });
 
 const ClassId = () => {
-    const { state, dispatch } = useContext(GlobalContext)
+    const { dispatch } = useContext(GlobalContext)
+    const { getDoc } = useDoc()
 
     const formik = useFormik({
         initialValues: {
@@ -20,30 +21,11 @@ const ClassId = () => {
         },
         validationSchema: validationSchema,
         onSubmit: (values, actions) => {
-            console.log(15);
-            localStorage.setItem('classId', values.classId);
-            fetchData(values.classId)
+            localStorage.setItem('classId', values.classId)
+            getDoc()
             actions.setSubmitting(false)
         },
     });
-
-
-    const fetchData = async (id) => {
-        try {
-            const res = await axios.get(`${state.api}docs/${id}`)
-            console.log(res);
-            dispatch({
-                type: "docs",
-                payload: res.data.docs,
-            })
-            dispatch({
-                type: 'classId',
-                payload: id
-            })
-        } catch (error) {
-            console.log(error.message);
-        }
-    }
 
     useEffect(() => {
         const id = localStorage.getItem('classId')
@@ -56,7 +38,7 @@ const ClassId = () => {
             return
         }
         formik.setFieldValue("classId", id)
-        fetchData(id);
+        getDoc();
     }, [])
 
     return (

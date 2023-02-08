@@ -1,21 +1,17 @@
-import { useState, useContext } from 'react';
-import axios from 'axios';
-import * as yup from 'yup';
-
-import { GlobalContext } from '../../context/context';
 import { useFormik } from 'formik';
+import * as yup from 'yup';
 import { GoDiffAdded } from 'react-icons/go';
 import {
     Stack, Box,
     FormControl, FormErrorMessage,
     useColorModeValue,
-    Input, IconButton, InputRightElement, Button,
+    Input, IconButton,
     InputGroup,
 } from '@chakra-ui/react';
-import { BsCode } from 'react-icons/bs';
 import SelectFile from '../selectFile';
 import CModal from '../ui-component/CModal';
 import CodeForm from '../codeForm';
+import useDoc from '../../hooks/useDoc';
 
 
 let validationSchema = yup.object().shape({
@@ -23,37 +19,19 @@ let validationSchema = yup.object().shape({
 });
 
 const LinkForm = () => {
-    const { state, dispatch } = useContext(GlobalContext)
+    const { postLink } = useDoc()
 
     const formik = useFormik({
         initialValues: {
             link: '',
         },
         validationSchema: validationSchema,
-        onSubmit: (values, actions) => {
-            fetchData(values)
+        onSubmit: async (values, actions) => {
+            await postLink(values)
             actions.setSubmitting(false)
             actions.resetForm()
         },
     });
-
-
-    const fetchData = async ({ link }) => {
-        try {
-            const res = await axios.post(`${state.api}docs`, {
-                text: link,
-                contentType: 'assignment',
-                classId: state.classId
-            })
-            console.log(res.data.doc);
-            dispatch({
-                type: 'docs',
-                payload: [res.data.doc, ...state.docs]
-            })
-        } catch (error) {
-            console.log(error.message);
-        }
-    }
 
     return (
         <Box mb={4} width='full'>
