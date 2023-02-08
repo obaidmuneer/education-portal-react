@@ -34,14 +34,14 @@ const DrawerButtons = ({ tab }) => {
                                     {
                                         tab.subTabs.map((subTab, i) => {
                                             return <Box key={i} as={Button} >
-                                                 <Icon as={subTab?.icon} boxSize={4} mr={2} />
+                                                <Icon as={subTab?.icon} boxSize={4} mr={2} />
                                                 <Heading size='xs'>
                                                     {subTab.title}
                                                 </Heading>
                                                 <Spacer />
 
                                                 {subTab.type ? <Badge colorScheme='red'>
-                                                    {state?.user?.bookmark?.filter(e => e.contentType === subTab.type).length}
+                                                    {state?.user?.bookmark?.filter(e => (e.contentType === subTab.type && !e.isDeleted)).length}
                                                 </Badge>
                                                     : null}
                                             </Box>
