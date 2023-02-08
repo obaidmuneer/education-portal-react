@@ -40,16 +40,22 @@ function DocList({ type }) {
                 if (!doc.isDeleted && doc.contentType === type) {
                     return <Stack key={index} >
                         <HStack>
-                            {doc.contentType === "assignment" ? <Link href={doc.text} isExternal >{doc.text}</Link> : doc.contentType === "file" ? <>
-                                <IconButton
-                                    variant='outline'
-                                    colorScheme='blue'
-                                    fontSize='20px'
-                                    icon={<BsFileCode />}
-                                    mx={2} /> <Link href={doc.file} isExternal > {doc.title}</Link></> :
-                                <Heading as='h4' size='md' >
-                                    {doc.codeTitle}
-                                </Heading>}
+                            {
+                                doc.contentType === "assignment" ?
+                                    <Link href={doc.text} isExternal >{doc.text}</Link> :
+                                    doc.contentType === "file" ?
+                                        <>
+                                            <IconButton
+                                                variant='outline'
+                                                colorScheme='blue'
+                                                fontSize='20px'
+                                                icon={<BsFileCode />}
+                                                mx={2} />
+                                            <Link href={doc.file} isExternal > {doc.title}</Link></> :
+                                        <Heading as='h4' size='md' >
+                                            {doc.codeTitle}
+                                        </Heading>
+                            }
                             <Spacer />
 
                             <BookmarkButton docId={doc._id} />

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
     Box,
     Center,
@@ -7,20 +6,13 @@ import {
     TabList,
     Tabs,
     Tab,
-    IconButton,
-    Stack,
     useColorModeValue
 } from '@chakra-ui/react';
-import { BsCode, BsFilePdf } from 'react-icons/bs';
 
 import DocList from '../docList';
-import CodeForm from '../codeForm';
-import SelectFile from '../selectFile';
 import LinkForm from "../linkForm";
 
 export default function DocBody() {
-    const [isCodeBlock, setIsCodeBlock] = useState(false)
-    const [isFileUpload, setIsFileUpload] = useState(false)
 
     return (
         <>
@@ -37,10 +29,6 @@ export default function DocBody() {
                     <Center >
                         <LinkForm />
                     </Center>
-                    {/* <DocList type="assignment" />
-                    <DocList type="file" />
-                    <DocList type="code" /> */}
-
 
                     <Tabs isFitted variant='enclosed'>
                         <TabList mb='1em'>
@@ -61,7 +49,6 @@ export default function DocBody() {
                         </TabPanels>
                     </Tabs>
                 </Box>
-
             </Center>
 
         </>

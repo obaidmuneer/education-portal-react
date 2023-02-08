@@ -1,11 +1,10 @@
-import { Button, Stack, useColorModeValue } from '@chakra-ui/react'
+import { Button } from '@chakra-ui/react'
 import React from 'react'
 import { BiRefresh } from 'react-icons/bi'
 import useDoc from '../../hooks/useDoc'
 
 const RefreshButton = () => {
     const { getDoc, isLoading } = useDoc()
-    const sec_c = useColorModeValue('white', 'gray.800')
 
     return (
         <Button
