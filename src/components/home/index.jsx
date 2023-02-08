@@ -5,52 +5,63 @@ import {
     Text,
     Show,
     Hide,
-    Center,
     Spinner,
+    Button,
 } from '@chakra-ui/react';
 import DocBody from '../docBody';
 import ClassId from '../classId';
 import { GlobalContext } from '../../context/context';
 import { useContext } from 'react';
 
+const CText = () => {
+    const { state } = useContext(GlobalContext)
+    return <Text as={'span'} color={'orange.400'}>
+        {state.classId.toUpperCase() || state.error || 'CLASS ID'}
+    </Text>
+}
+
+
 const Home = () => {
     const { state } = useContext(GlobalContext)
     return (
         <div>
             <Container maxW={'5xl'}>
-                <Show below='md'>
-                    <Center my={2}>
+
+                <Stack
+                    textAlign={'center'}
+                    align={'center'}
+                    spacing={{ base: 8, md: 10 }}
+                    py={{ base: 5, md: 18 }}>
+                    <Show below='md' >
                         <ClassId />
-                    </Center>
-                </Show>
-                <Hide below='md' >
-                    <Stack
-                        textAlign={'center'}
-                        align={'center'}
-                        spacing={{ base: 8, md: 10 }}
-                        py={{ base: 5, md: 18 }}>
+                    </Show>
+                    <Hide below='md' >
                         {
-                            state.classId === null ? <Spinner color='orange.400' thickness='4px' size={'xl'}  speed='0.6s' emptyColor='gray' /> :
-                                state.classId ? <Heading
+                            state.classId === null ?
+                                <Spinner color='orange.400' thickness='4px' size={'xl'} speed='0.6s' emptyColor='gray' /> :
+
+                                <Heading
                                     fontWeight={600}
                                     fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}
                                     lineHeight={'110%'}>
-                                    Class ID {' '}
-                                    <Text as={'span'} color={'orange.400'}>
-                                        {state.classId.toUpperCase()}
-                                    </Text>
-                                </Heading> :<Heading
-                                        fontWeight={600}
-                                        fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}
-                                        lineHeight={'110%'}>
-                                        Enter {' '}
-                                        <Text as={'span'} color={'orange.400'}>
-                                            CLASS ID
-                                        </Text>
-                                    </Heading>
+                                    {
+                                        !state.error ? state.classId ?
+                                            <>
+                                                Class ID {' '}
+                                                <CText />
+                                            </> :
+                                            <>
+                                                Enter {' '}
+                                                <CText />
+                                            </> :
+                                            <CText />
+                                    }
+                                </Heading>
                         }
+                    </Hide>
 
-                        {/* <Stack spacing={6} direction={'row'}>
+
+                    {/* <Stack spacing={6} direction={'row'}>
                         <Button
                             rounded={'full'}
                             px={6}
@@ -64,11 +75,10 @@ const Home = () => {
                         </Button>
                     </Stack> */}
 
-                    </Stack>
-                </Hide>
+                </Stack>
                 {state.classId ? <DocBody /> : null}
             </Container>
-        </div>
+        </div >
     )
 }
 

@@ -12,6 +12,8 @@ export const reducer = (state, action) => {
       return { ...state, user: { ...state.user, bookmark: action.payload } };
     case "logout":
       return { ...state, user: false };
+    case "error":
+      return { ...state, error: action.payload , classId:'' };
     default:
       return state;
   }

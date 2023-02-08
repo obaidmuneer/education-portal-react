@@ -7,6 +7,7 @@ let data = {
     user: null,
     classId: null,
     docs: [],
+    err: null,
     api: window.location.href.includes("localhost") ?
         "http://localhost:8080/api/v1/"
         :
