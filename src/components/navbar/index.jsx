@@ -21,14 +21,13 @@ import {
     IconButton,
     Hide,
     Show,
-    Heading,
-    Text,
 } from '@chakra-ui/react';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 
 import ClassId from '../classId';
 import { GlobalContext } from '../../context/context';
+import HeadingTitle from '../headingTitle';
 
 const Links = [{ title: 'Home', path: '/' }];
 
@@ -81,30 +80,7 @@ export default function Navbar() {
                     />
                     <HStack spacing={8} alignItems={'center'}>
                         <Show below='md' >
-                            {
-                                state.classId ?
-                                    <Heading
-                                        fontWeight={600}
-                                        fontSize={{ base: '2xl', sm: '3xl' }}
-                                        lineHeight={'110%'}
-                                    >
-                                        Class ID {' '}
-                                        <Text as={'span'} color={'orange.400'}>
-                                            {state.classId.toUpperCase()}
-                                        </Text>
-                                    </Heading>
-                                    :
-                                    <Heading
-                                        fontWeight={600}
-                                        fontSize={{ base: '2xl', sm: '3xl' }}
-                                        lineHeight={'110%'}
-                                    >
-                                        Enter {' '}
-                                        <Text as={'span'} color={'orange.400'}>
-                                            CLASS ID
-                                        </Text>
-                                    </Heading>
-                            }
+                            <HeadingTitle nav={true} />
                         </Show>
                         <Show above='md' >
                             <Box>Sysborg Clone</Box>
