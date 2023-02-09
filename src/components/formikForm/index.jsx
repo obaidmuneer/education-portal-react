@@ -6,7 +6,7 @@ import {
     IconButton,
 } from '@chakra-ui/react';
 
-const FormikInput = ({ color, icon, placeHolder, hideBtn, formik, nameLabel, type }) => {
+const FormikForm = ({ color, icon, placeHolder, hideBtn, formik, nameLabel, type }) => {
     const c = color || 'orange';
     const sec_c = useColorModeValue('white', 'gray.800')
 
@@ -48,4 +48,4 @@ const FormikInput = ({ color, icon, placeHolder, hideBtn, formik, nameLabel, typ
     )
 }
 
-export default FormikInput
+export default FormikForm

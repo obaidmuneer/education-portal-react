@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react';
-import FormikInput from '../formikInput';
+import FormikForm from '../formikForm';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import useDoc from '../../hooks/useDoc';
@@ -20,9 +20,9 @@ const ClassId = () => {
             classId: '',
         },
         validationSchema: validationSchema,
-        onSubmit: (values, actions) => {
+        onSubmit: async (values, actions) => {
             localStorage.setItem('classId', values.classId)
-            getDoc()
+            await getDoc()
             actions.setSubmitting(false)
         },
     });
@@ -43,9 +43,7 @@ const ClassId = () => {
 
     return (
         <div>
-            <form onSubmit={formik.handleSubmit} >
-                <FormikInput formik={formik} nameLabel={'classId'} placeHolder={'Enter Class ID'} icon={<BiSend />} />
-            </form>
+            <FormikForm formik={formik} nameLabel={'classId'} placeHolder={'Enter Class ID'} icon={<BiSend />} />
         </div>
     )
 }
