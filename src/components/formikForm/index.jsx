@@ -6,13 +6,13 @@ import {
     IconButton,
 } from '@chakra-ui/react';
 
-const FormikInput = ({ color, icon, placeHolder, hideBtn, formik, nameLabel }) => {
+const FormikInput = ({ color, icon, placeHolder, hideBtn, formik, nameLabel, type }) => {
     const c = color || 'orange';
     const sec_c = useColorModeValue('white', 'gray.800')
 
     return (
         <>
-            <Stack direction={'row'} >
+            <Stack direction={'row'} width={'full'} as={'form'} onSubmit={formik.handleSubmit} >
                 <FormControl isInvalid={formik.errors[nameLabel] && formik.touched[nameLabel]}>
                     <Input
                         bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}
@@ -25,6 +25,8 @@ const FormikInput = ({ color, icon, placeHolder, hideBtn, formik, nameLabel }) =
                         value={formik.values[nameLabel]}
                         onChange={formik.handleChange}
                         placeholder={placeHolder}
+                        type={type || 'text'}
+                        autoComplete='off'
                     />
                     <FormErrorMessage>{formik.errors[nameLabel]}</FormErrorMessage>
                 </FormControl>
