@@ -13,9 +13,8 @@ import {
     Icon,
     Tooltip
 } from '@chakra-ui/react'
-import { BsCode, BsFolderPlus } from 'react-icons/bs'
 
-function CModal({ children, isCode }) {
+function CModal({ children, icon, label, header }) {
     const OverlayOne = () => (
         <ModalOverlay
             bg='blackAlpha.300'
@@ -35,22 +34,21 @@ function CModal({ children, isCode }) {
 
     return (
         <>
-            <Tooltip label={isCode ? "Add Code" : 'Upload Files'} >
+            <Tooltip label={label} >
                 <Button
                     onClick={() => {
                         setOverlay(<OverlayOne />)
                         onOpen()
                     }}
                 >
-                    <Icon mx={1} as={isCode ? BsCode : BsFolderPlus} />
+                    <Icon mx={1} as={icon} />
                 </Button>
             </Tooltip>
-
 
             <Modal isCentered isOpen={isOpen} onClose={onClose}>
                 {overlay}
                 <ModalContent>
-                    <ModalHeader>{isCode ? "Add Code" : "Upload Your File"}</ModalHeader>
+                    <ModalHeader>{header}</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         {childrenWithProps}
