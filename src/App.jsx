@@ -4,7 +4,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { Center, Spinner } from '@chakra-ui/react';
 import Home from './components/home';
 import CDrawer from './components/cDrawer';
-import Navbar from './components/nabar';
+import Navbar from './components/navbar';
 import Signin from './components/signin';
 import Signup from './components/signup';
 import { GlobalContext } from './context/context';

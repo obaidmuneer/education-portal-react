@@ -1,8 +1,6 @@
 import {
     Container,
-    Heading,
     Stack,
-    Text,
     Show,
     Hide,
     Spinner,
@@ -12,21 +10,13 @@ import DocBody from '../docBody';
 import ClassId from '../classId';
 import { GlobalContext } from '../../context/context';
 import { useContext } from 'react';
-
-const CText = () => {
-    const { state } = useContext(GlobalContext)
-    return <Text as={'span'} color={'orange.400'}>
-        {state.classId.toUpperCase() || state.error || 'CLASS ID'}
-    </Text>
-}
-
+import HeadingTitle from '../headingTitle';
 
 const Home = () => {
     const { state } = useContext(GlobalContext)
     return (
         <div>
             <Container maxW={'5xl'}>
-
                 <Stack
                     textAlign={'center'}
                     align={'center'}
@@ -39,24 +29,7 @@ const Home = () => {
                         {
                             state.classId === null ?
                                 <Spinner color='orange.400' thickness='4px' size={'xl'} speed='0.6s' emptyColor='gray' /> :
-
-                                <Heading
-                                    fontWeight={600}
-                                    fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}
-                                    lineHeight={'110%'}>
-                                    {
-                                        !state.error ? state.classId ?
-                                            <>
-                                                Class ID {' '}
-                                                <CText />
-                                            </> :
-                                            <>
-                                                Enter {' '}
-                                                <CText />
-                                            </> :
-                                            <CText />
-                                    }
-                                </Heading>
+                                <HeadingTitle />
                         }
                     </Hide>
 
