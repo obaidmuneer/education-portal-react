@@ -10,9 +10,10 @@ import CodeForm from '../codeForm';
 import useDoc from '../../hooks/useDoc';
 import { BsCode, BsFolderPlus } from 'react-icons/bs'
 import FormikForm from '../formikForm';
+import DeleteModal from '../deleteButton';
 
 const validationSchema = yup.object().shape({
-    link: yup.string().required('Please enter a link'),
+    link: yup.string().min(3).required('Please enter a link'),
 });
 
 const LinkForm = () => {
@@ -45,6 +46,7 @@ const LinkForm = () => {
                 <CModal label={'Upload Files'} header={"Upload Your File"} icon={BsFolderPlus} >
                     <SelectFile />
                 </CModal>
+                <DeleteModal />
             </Stack>
         </Box>
     )

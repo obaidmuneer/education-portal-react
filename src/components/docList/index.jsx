@@ -7,11 +7,15 @@ import { useContext } from 'react'
 import { BsFileCode } from 'react-icons/bs'
 import { GlobalContext } from '../../context/context'
 import CodeBlocks from '../codeBlock'
-import DeleteButton from '../deleteButton'
 import BookmarkButton from '../bookmarkButton'
+import InfiniteScroll from 'react-infinite-scroller';
+import useDoc from '../../hooks/useDoc'
+import DeleteModal from '../deleteButton'
+import CGrid from '../ui-component/CTable';
 
 function DocList({ type }) {
     const { state } = useContext(GlobalContext)
+    // const { getDoc } = useDoc()
 
     if (state?.docs?.length === 0)
         return (
@@ -36,8 +40,14 @@ function DocList({ type }) {
 
     return (
         <VStack {...vStackProps}>
+            {/* <InfiniteScroll
+                pageStart={0}
+                loadMore={getDoc}
+                hasMore={!state.eof}
+                loader={<div className="loader" key={0}>Loading ...</div>}
+            > */}
             {state?.docs?.map((doc, index) => {
-                if (!doc.isDeleted && doc.contentType === type) {
+                if (!doc?.isDeleted && doc?.contentType === type) {
                     return <Stack key={index} >
                         <HStack>
                             {
@@ -59,7 +69,7 @@ function DocList({ type }) {
                             <Spacer />
 
                             <BookmarkButton docId={doc._id} />
-                            <DeleteButton docId={doc._id} i={index} />
+                            <DeleteModal docId={doc._id} i={index} />
                         </HStack>
                         {
                             type === "code" ? <CodeBlocks code={doc.codeBlock} language={doc.codeLang} /> : null
@@ -67,6 +77,8 @@ function DocList({ type }) {
                     </Stack>
                 }
             })}
+            {/* </InfiniteScroll> */}
+            {/* <CGrid /> */}
         </VStack>
     )
 }

@@ -5,17 +5,21 @@ import { GlobalContext } from "../context/context";
 const useDoc = () => {
     const { state, dispatch } = useContext(GlobalContext)
     const [isLoading, setIsLoading] = useState(false)
-    
+
     const getDoc = async () => {
         const id = localStorage.getItem('classId')
         if (!id) return
+        // if (state.eof) return
         try {
             setIsLoading(true)
-            const res = await axios.get(`${state.api}docs/${id}`)
-            // console.log(res);
+            const res = await axios.get(`${state.api}docs/${id}?page=${state.docs.length}`)
+            // if (res.data.docs.length === 0) dispatch({
+            //     type: 'eof',
+            //     payload: true
+            // });
             dispatch({
                 type: "docs",
-                payload: res.data.docs,
+                payload: res.data.docs
             })
             dispatch({
                 type: 'classId',

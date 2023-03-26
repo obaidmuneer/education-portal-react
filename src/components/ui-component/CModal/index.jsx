@@ -41,7 +41,7 @@ function CModal({ children, icon, label, header }) {
                         onOpen()
                     }}
                 >
-                    <Icon mx={1} as={icon} />
+                    <Icon as={icon} />
                 </Button>
             </Tooltip>
 

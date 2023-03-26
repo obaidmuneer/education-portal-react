@@ -11,30 +11,36 @@ const validationSchema = yup.object().shape({
     password: yup.string().required('Please enter password')
 })
 
-const DeleteButton = ({ docId, i }) => {
-    const { handleDelete } = useDelete()
+const DeleteButton = ({ docId, i, onClose }) => {
+    const { handleDelete, deleteLinks } = useDelete()
     const formik = useFormik({
         initialValues: {
             password: ''
         },
         validationSchema: validationSchema,
         onSubmit: async (values, actions) => {
-            await handleDelete(docId, i, values.password)
+            docId ?
+                await handleDelete(docId, i, values.password) :
+                await deleteLinks(values.password)
             actions.setSubmitting(false)
+            onClose();
         }
     })
 
-    return <>
-        <CModal icon={FaTrash} label={'Delete'} header={'Please Enter Password'} >
-            <FormikForm
-                formik={formik}
-                color={'blue'}
-                nameLabel={'password'}
-                placeHolder={'Enter Password'}
-                type='password'
-                icon={<BiSend />} />
-        </CModal>
-    </>
+    return <FormikForm
+        formik={formik}
+        color={'blue'}
+        nameLabel={'password'}
+        placeHolder={'Enter Password'}
+        type='password'
+        icon={<BiSend />} />
 }
 
-export default DeleteButton
+const DeleteModal = ({ docId, i }) => {
+    return <CModal icon={FaTrash} label={docId ? 'Delete' : 'Delete Links'}
+        header={'Please Enter Password'} >
+        <DeleteButton docId={docId} i={i} />
+    </CModal>
+}
+
+export default DeleteModal

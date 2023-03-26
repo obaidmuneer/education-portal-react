@@ -5,7 +5,7 @@ import { GlobalContext } from '../../context/context'
 const CText = () => {
   const { state } = useContext(GlobalContext)
   return <Text as={'span'} color={'orange.400'}>
-    {state.classId.toUpperCase() || state.error || 'CLASS ID'}
+    {state?.classId?.toUpperCase() || state.error || 'CLASS ID'}
   </Text>
 }
 

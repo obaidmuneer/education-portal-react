@@ -13,7 +13,9 @@ export const reducer = (state, action) => {
     case "logout":
       return { ...state, user: false };
     case "error":
-      return { ...state, error: action.payload , classId:'' };
+      return { ...state, error: action.payload, classId: '' };
+    case "eof":
+      return { ...state, eof: action.payload };
     default:
       return state;
   }
