@@ -21,7 +21,7 @@ const ClassId = () => {
         },
         validationSchema: validationSchema,
         onSubmit: async (values, actions) => {
-            localStorage.setItem('classId', values.classId)
+            localStorage.setItem('classId', values.classId.toLowerCase())
             await getDoc()
             actions.setSubmitting(false)
         },
