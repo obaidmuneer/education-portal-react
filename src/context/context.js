@@ -12,7 +12,7 @@ let data = {
     api: window.location.href.includes("localhost") ?
         "http://localhost:8080/api/v1/"
         :
-        "https://busy-gray-caridea-tie.cyclic.app/api/v1/"
+        "https://education-portal-server-xi.vercel.app/api/v1/"
 };
 
 export default function ContextProvider({ children }) {
